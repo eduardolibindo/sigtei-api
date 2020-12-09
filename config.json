@@ -1,0 +1,19 @@
+﻿{
+    "database": {
+        "host": "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        "port": 3306,
+        "user": "u2x716enc8vkpf51",
+        "password": "xcfqxwcoj8jp8crg",
+        "database": "f7ceshr1lvdu1yvq"
+    },
+    "secret": "NhDct_VWU0-uKR5oHX1TxAM0rvrya0qEWC95c95XxhBwwV0QNy0oGE60igXGTijmKANgvq8q2ZlEuLbr05XCEUAgmVDSoYgeNUeJ5zfXdOW6wQ4ZGP7FQ8TUqhMflfASBiSwq2qrj3CnYkSrsmT3Xm600wr5mDTWZ00UqSWI6D-BKtDw5RwuXO_TLk-27wYZ1syBqA_RuaLljddkWDBoe-BSa-AA",
+    "emailFrom": "suporte.sigtei@gmail.com",
+    "smtpOptions": {
+        "host": "smtp.gmail.com",
+        "port": 587,
+        "auth": {
+            "user": "suporte.sigtei@gmail.com",
+            "pass": "sigtei2020"
+        }
+    }
+}
