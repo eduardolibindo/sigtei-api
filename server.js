@@ -24,16 +24,16 @@ app.use('/api-docs', require('_helpers/swagger'));
 // manipulador de erro global
 app.use(errorHandler);
 
-app.use(express.static("dist/sigtei"));
-app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
-});
+// app.use(express.static("dist/sigtei"));
+// app.get("/*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
+// });
 
 //heruko 
-// app.use(express.static(`${__dirname}/dist/${sigtei}`));
-// app.get('/*', (req, res) => {
-//     res.sendFile(path.join(`${__dirname}/dist/${sigtei}/index.html`));
-// });
+app.use(express.static(`${__dirname}/dist/${sigtei}`));
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(`${__dirname}/dist/${sigtei}/index.html`));
+});
 
 
 // iniciar o servidor
