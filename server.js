@@ -30,10 +30,14 @@ app.use(errorHandler);
 // });
 
 //heruko 
-app.use(express.static(`${__dirname}/dist/sigtei`));
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
-});
+// app.use(express.static(`${__dirname}/dist/sigtei`));
+// app.get('/*', (req, res) => {
+//     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
+// });
+
+app.get('/', (req,res) => {
+    res.send('Bem-vindo na api-sigtei no Heroku !!');
+})
 
 
 // iniciar o servidor
