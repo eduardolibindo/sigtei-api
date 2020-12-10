@@ -23,7 +23,7 @@ app.use('/api-docs', require('_helpers/swagger'));
 app.use(errorHandler);
 
 app.use(express.static("dist/sigtei"));
-app.post("/", (req, res) => {
+app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
 });
 
