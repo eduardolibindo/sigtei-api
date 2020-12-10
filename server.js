@@ -22,6 +22,9 @@ app.use('/api-docs', require('_helpers/swagger'));
 // manipulador de erro global
 app.use(errorHandler);
 
+var distDir = __dirname + "/dist/";
+app.use(express.static(distDir));
+
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
 app.listen(port, () => console.log('Servidor ouvindo na porta ' + port));
