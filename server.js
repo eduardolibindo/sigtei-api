@@ -30,9 +30,9 @@ app.use(errorHandler);
 // });
 
 //heruko 
-app.use(express.static(`${__dirname}/dist/${sigtei}`));
+app.use(express.static(`${__dirname}/dist/sigtei`));
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(`${__dirname}/dist/${sigtei}/index.html`));
+    res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 });
 
 
