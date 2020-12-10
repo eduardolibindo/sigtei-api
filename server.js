@@ -22,8 +22,10 @@ app.use('/api-docs', require('_helpers/swagger'));
 // manipulador de erro global
 app.use(errorHandler);
 
-var distDir = __dirname + "/dist/";
-app.use(express.static(distDir));
+app.use(express.static("dist/sigtei"));
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
+});
 
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
