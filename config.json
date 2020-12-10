@@ -1,7 +1,7 @@
 ﻿{
     "database": {
         "host": "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-        "port": 3306,
+        "port": "3306",
         "user": "u2x716enc8vkpf51",
         "password": "xcfqxwcoj8jp8crg",
         "database": "f7ceshr1lvdu1yvq"
