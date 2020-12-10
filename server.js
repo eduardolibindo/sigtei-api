@@ -1,10 +1,12 @@
 ﻿require('rootpath')();
 const express = require('express');
+const sigtei = process.env.npm_package_name;
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -23,9 +25,16 @@ app.use('/api-docs', require('_helpers/swagger'));
 app.use(errorHandler);
 
 app.use(express.static("dist/sigtei"));
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
 });
+
+//heruko 
+// app.use(express.static(`${__dirname}/dist/${sigtei}`));
+// app.get('/*', (req, res) => {
+//     res.sendFile(path.join(`${__dirname}/dist/${sigtei}/index.html`));
+// });
+
 
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
