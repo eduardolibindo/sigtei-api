@@ -28,8 +28,7 @@ app.use(errorHandler);
 // app.get("/*", (req, res) => {
 //     res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
 // });
-
-//heruko 
+ 
 // app.use(express.static(`${__dirname}/dist/sigtei`));
 // app.get('/*', (req, res) => {
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
