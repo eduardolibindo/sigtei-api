@@ -8,7 +8,7 @@ const accountService = require('./account.service');
 
 // rotas
 router.post('/authenticate', authenticateSchema, authenticate);
-router.get('/refresh-token', refreshToken);
+router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/verify-email', verifyEmailSchema, verifyEmail);
