@@ -16,8 +16,8 @@ async function initialize() {
     const sequelize = new Sequelize(database, user, password, { host:'klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', dialect: 'mysql' });
 
     // modelos de inicialização e adicioná-los ao objeto db exportado
-    db.Account = require('../accounts/account.model')(sequelize);
-    db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
+    db.Account = require('../msc/accounts/account.model')(sequelize);
+    db.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
 
     // define relacionamentos
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
