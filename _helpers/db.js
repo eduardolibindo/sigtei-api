@@ -20,7 +20,7 @@ async function initialize() {
     // modelos de inicialização e adicioná-los ao objeto db exportado
     dbPlaces.Places = require('../msc/accounts/places.model')(sequelize);
     dbAccount.Account = require('../msc/accounts/account.model')(sequelize);
-    db.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
+    dbRefreshToken.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
     
 
     // define relacionamentos
