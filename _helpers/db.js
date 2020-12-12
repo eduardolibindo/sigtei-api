@@ -23,7 +23,7 @@ async function initialize() {
     // define relacionamentos
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.Places.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
-    db.RefreshToken.belongsTo(db.Account, db.Places);
+    db.RefreshToken.belongsTo(db.Account);
 
     
     // sincroniza todos os modelos com o banco de dados
