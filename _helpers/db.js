@@ -18,7 +18,7 @@ async function initialize() {
     // modelos de inicialização e adicioná-los ao objeto db exportado
     db.Account = require('../msc/accounts/account.model')(sequelize);
     db.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
-    db.Places = require('../msc/places/places.model')(sequelize);
+    db.Places = require('../msc/accounts/places.model')(sequelize);
 
     // define relacionamentos
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });

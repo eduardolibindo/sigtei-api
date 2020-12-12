@@ -17,10 +17,15 @@ module.exports = {
     validateResetToken,
     resetPassword,
     getAll,
+    getplaceAll,
     getById,
+    getplaceById,
     create,
+    createPlace,
     update,
-    delete: _delete
+    updatePlace,
+    delete: _delete,
+    deletePlace: _deletePlace
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -155,9 +160,19 @@ async function getAll() {
     return accounts.map(x => basicDetails(x));
 }
 
+async function getplaceAll() {
+    const places = await db.Places.findALL();
+    return places.map(x => basicDetailsPlace(x));
+}
+
 async function getById(id) {
     const account = await getAccount(id);
     return basicDetails(account);
+}
+
+async function getplaceById(id) {
+    const places = await getPlace(id);
+    return basicDetailsPlace(places);
 }
 
 async function create(params) {
@@ -176,6 +191,18 @@ async function create(params) {
     await account.save();
 
     return basicDetails(account);
+}
+
+async function createPlace(params) {
+    // validar
+    if (await db.Places.findOne({ where: { place: params.place } })) {
+        throw 'Local "' + params.place + '" já está cadastrado';
+    }
+
+    const places = new db.Places(params);
+
+    await places.save();
+    return basicDetailsPlace(places);
 }
 
 async function update(id, params) {
@@ -199,9 +226,31 @@ async function update(id, params) {
     return basicDetails(account);
 }
 
+async function updatePlace(id, params) {
+    const places = await getPlace(id);
+
+    // validar (se o endereco foi alterado)
+    if (params.place && places.place !== params.place && await db.Places.findOne({ where: { place: params.place } })) {
+        throw 'Local "' + params.place + '" já está cadastrado';
+    }
+
+    // copia os parâmetros para a conta e salva
+    Object.assign(places, params);
+    places.updated = Date.now();
+    await places.save();
+
+    return basicDetailsPlace(places);
+
+}
+
 async function _delete(id) {
     const account = await getAccount(id);
     await account.destroy();
+}
+
+async function _deletePlace(id) {
+    const places = await getPlace(id);
+    await places.destroy();
 }
 
 // funções auxiliares
@@ -210,6 +259,12 @@ async function getAccount(id) {
     const account = await db.Account.findByPk(id);
     if (!account) throw 'Conta não encontrada';
     return account;
+}
+
+async function getPlace(id) {
+    const places = await db.Places.findByPk(id);
+    if (!places) throw 'local não encontrada';
+    return places;
 }
 
 async function getRefreshToken(token) {
@@ -244,6 +299,12 @@ function randomTokenString() {
 function basicDetails(account) {
     const { id, title, firstName, lastName, email, rg, institution, course, phone, address, role, created, updated, isVerified } = account;
     return { id, title, firstName, lastName, email, rg, institution, course, phone, address, role, created, updated, isVerified };
+}
+
+
+function basicDetailsPlace(places) {
+    const { id, title, place, street, district, city, state, created, updated, verified } = places;
+    return { id, title, place, street, district, city, state, created, updated, verified };
 }
 
 async function sendVerificationEmail(account, origin) {
