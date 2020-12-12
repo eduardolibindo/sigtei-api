@@ -11,8 +11,7 @@ function model(sequelize) {
         city: { type: DataTypes.STRING, allowNull: false},
         state: { type: DataTypes.STRING, allowNull: false},
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-        updated: { type: DataTypes.DATE },
-        verified: { type: DataTypes.DATE },
+        updated: { type: DataTypes.DATE }
     };
 
     const options = {
