@@ -5,7 +5,6 @@ const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize')
 const Role = require('_helpers/role');
 const placesService = require('./places.service');
-const accountService = require('./account.service');
 
 // rotas
 router.post('/authenticate', authenticateSchema, authenticate);
@@ -30,7 +29,7 @@ function authenticateSchema(req, res, next) {
 function authenticate(req, res, next) {
     const { email, password } = req.body;
     const ipAddress = req.ip;
-    accountService.authenticate({ email, password, ipAddress })
+    placesService.authenticate({ email, password, ipAddress })
         .then(({ refreshToken, ...account }) => {
             setTokenCookie(res, refreshToken);
             res.json(account);
@@ -41,7 +40,7 @@ function authenticate(req, res, next) {
 function refreshToken(req, res, next) {
     const token = req.cookies.refreshToken;
     const ipAddress = req.ip;
-    accountService.refreshToken({ token, ipAddress })
+    placesService.refreshToken({ token, ipAddress })
         .then(({ refreshToken, ...account }) => {
             setTokenCookie(res, refreshToken);
             res.json(account);
@@ -68,7 +67,7 @@ function revokeToken(req, res, next) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
-    accountService.revokeToken({ token, ipAddress })
+    placesService.revokeToken({ token, ipAddress })
         .then(() => res.json({ message: 'Token revogado' }))
         .catch(next);
 }

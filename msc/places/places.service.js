@@ -128,3 +128,28 @@ function basicDetails(places) {
     const { id, title, place, street, district, city, state, created, updated, verified } = places;
     return { id, title, place, street, district, city, state, created, updated, verified };
 }
+
+async function getRefreshToken(token) {
+    const refreshToken = await db.RefreshToken.findOne({ where: { token } });
+    if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
+    return refreshToken;
+}
+
+function generateJwtToken(places) {
+    // cria um token jwt contendo o ID da conta que expira em 15 minutos
+    return jwt.sign({ sub: places.id, id: places.id }, config.secret, { expiresIn: '15m' });
+}
+
+function generateRefreshToken(places, ipAddress) {
+    // cria um token de atualização que expira em 7 dias
+    return new db.RefreshToken({
+        placesId: places.id,
+        token: randomTokenString(),
+        expires: new Date(Date.now() + 7*24*60*60*1000),
+        createdByIp: ipAddress
+    });
+}
+
+function randomTokenString() {
+    return crypto.randomBytes(40).toString('hex');
+}
