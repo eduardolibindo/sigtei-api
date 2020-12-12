@@ -1,6 +1,6 @@
 const jwt = require('express-jwt');
 const { secret } = require('config.json');
-const dbAccount = require('_helpers/db');
+const db = require('_helpers/db');
 
 module.exports = authorize;
 
@@ -17,7 +17,7 @@ function authorize(roles = []) {
 
         // autorizar com base na função do usuário
         async (req, res, next) => {
-            const account = await dbAccount.Account.findByPk(req.user.id);
+            const account = await db.Account.findByPk(req.user.id);
 
             if (!account || (roles.length && !roles.includes(account.role))) {
                 // conta não existe mais ou função não autorizada

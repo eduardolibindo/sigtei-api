@@ -33,7 +33,7 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-app.get('/*', (req,res) => {
+app.get('/', (req,res) => {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
 })
 

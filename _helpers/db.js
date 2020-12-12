@@ -2,9 +2,7 @@ const config = require('config.json');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 
-module.exports = dbAccount = {};
-module.exports = dbPlaces = {};
-module.exports = dbRefreshToken = {};
+module.exports = db = {};
 
 initialize();
 
@@ -18,16 +16,16 @@ async function initialize() {
     const sequelize = new Sequelize(database, user, password, { host:'klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', dialect: 'mysql' });
 
     // modelos de inicialização e adicioná-los ao objeto db exportado
-    dbPlaces.Places = require('../msc/accounts/places.model')(sequelize);
-    dbAccount.Account = require('../msc/accounts/account.model')(sequelize);
-    dbRefreshToken.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
-    
+    db.Account = require('../msc/accounts/account.model')(sequelize);
+    db.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
+    db.Places = require('../msc/accounts/places.model')(sequelize);
 
     // define relacionamentos
-    dbAccount.Account.hasMany(dbRefreshToken.RefreshToken, { onDelete: 'CASCADE' });
-    dbPlaces.Places.hasMany(dbRefreshToken.RefreshToken, { onDelete: 'CASCADE' });
-    dbRefreshToken.RefreshToken.belongsTo(dbAccount.Account);
-    dbRefreshToken.RefreshToken.belongsTo(dbPlaces.Places);
+    db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
+    db.RefreshToken.belongsTo(db.Account);
+    
+    db.Places.belongsTo(db.Account);
+    db.RefreshToken.belongsTo(db.Places);
 
     
     // sincroniza todos os modelos com o banco de dados

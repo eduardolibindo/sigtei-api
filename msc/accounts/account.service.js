@@ -4,9 +4,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const { Op } = require('sequelize');
 const sendEmail = require('_helpers/send-email');
-const dbAccount = require('_helpers/db');
-const dbPlaces = require('_helpers/db');
-const dbRefreshToken = require('_helpers/db');
+const db = require('_helpers/db');
 const Role = require('_helpers/role');
 
 module.exports = {
@@ -31,7 +29,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    const account = await dbAccount.Account.scope('withHash').findOne({ where: { email } });
+    const account = await db.Account.scope('withHash').findOne({ where: { email } });
 
     if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
         throw 'E-mail ou senha está incorreto';
@@ -86,16 +84,16 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
     // validar
-    if (await dbAccount.Account.findOne({ where: { email: params.email } })) {
+    if (await db.Account.findOne({ where: { email: params.email } })) {
         // enviar erro já registrado no e-mail para evitar enumeração de conta
         return await sendAlreadyRegisteredEmail(params.email, origin);
     }
 
     // criar objeto de conta
-    const account = new dbAccount.Account(params);
+    const account = new db.Account(params);
 
     // a primeira conta registrada é um administrador
-    const isFirstAccount = (await dbAccount.Account.count()) === 0;
+    const isFirstAccount = (await db.Account.count()) === 0;
     account.role = isFirstAccount ? Role.Admin : Role.Estudante;
     account.verificationToken = randomTokenString();
 
@@ -110,7 +108,7 @@ async function register(params, origin) {
 }
 
 async function verifyEmail({ token }) {
-    const account = await dbAccount.Account.findOne({ where: { verificationToken: token } });
+    const account = await db.Account.findOne({ where: { verificationToken: token } });
 
     if (!account) throw 'Falha na verificação';
 
@@ -120,7 +118,7 @@ async function verifyEmail({ token }) {
 }
 
 async function forgotPassword({ email }, origin) {
-    const account = await dbAccount.Account.findOne({ where: { email } });
+    const account = await db.Account.findOne({ where: { email } });
 
     // sempre retorna uma resposta ok para evitar a enumeração de e-mail
     if (!account) return;
@@ -135,7 +133,7 @@ async function forgotPassword({ email }, origin) {
 }
 
 async function validateResetToken({ token }) {
-    const account = await dbAccount.Account.findOne({
+    const account = await db.Account.findOne({
         where: {
             resetToken: token,
             resetTokenExpires: { [Op.gt]: Date.now() }
@@ -158,12 +156,12 @@ async function resetPassword({ token, password }) {
 }
 
 async function getAll() {
-    const accounts = await dbAccount.Account.findAll();
+    const accounts = await db.Account.findAll();
     return accounts.map(x => basicDetails(x));
 }
 
 async function getplaceAll() {
-    const places = await dbPlaces.Places.findALL();
+    const places = await db.Places.findALL();
     return places.map(x => basicDetailsPlace(x));
 }
 
@@ -179,11 +177,11 @@ async function getplaceById(id) {
 
 async function create(params) {
     // validar
-    if (await dbAccount.Account.findOne({ where: { email: params.email } })) {
+    if (await db.Account.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" já está registrado';
     }
 
-    const account = new dbAccount.Account(params);
+    const account = new db.Account(params);
     account.verified = Date.now();
 
     // senha hash
@@ -197,11 +195,11 @@ async function create(params) {
 
 async function createPlace(params) {
     // validar
-    if (await dbPlaces.Places.findOne({ where: { place: params.place } })) {
+    if (await db.Places.findOne({ where: { place: params.place } })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
-    const places = new dbPlaces.Places(params);
+    const places = new db.Places(params);
     places.verified = Date.now();
 
     await places.save();
@@ -212,7 +210,7 @@ async function update(id, params) {
     const account = await getAccount(id);
 
     // validar (se o e-mail foi alterado)
-    if (params.email && account.email !== params.email && await dbAccount.Account.findOne({ where: { email: params.email } })) {
+    if (params.email && account.email !== params.email && await db.Account.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" já está ocupado';
     }
 
@@ -233,7 +231,7 @@ async function updatePlace(id, params) {
     const places = await getPlace(id);
 
     // validar (se o endereco foi alterado)
-    if (params.place && places.place !== params.place && await dbPlaces.Places.findOne({ where: { place: params.place } })) {
+    if (params.place && places.place !== params.place && await db.Places.findOne({ where: { place: params.place } })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
@@ -259,19 +257,19 @@ async function _deletePlace(id) {
 // funções auxiliares
 
 async function getAccount(id) {
-    const account = await dbAccount.Account.findByPk(id);
+    const account = await db.Account.findByPk(id);
     if (!account) throw 'Conta não encontrada';
     return account;
 }
 
 async function getPlace(id) {
-    const places = await dbPlaces.Places.findByPk(id);
+    const places = await db.Places.findByPk(id);
     if (!places) throw 'local não encontrada';
     return places;
 }
 
 async function getRefreshToken(token) {
-    const refreshToken = await dbRefreshToken.RefreshToken.findOne({ where: { token } });
+    const refreshToken = await db.RefreshToken.findOne({ where: { token } });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
@@ -287,7 +285,7 @@ function generateJwtToken(account) {
 
 function generateRefreshToken(account, ipAddress) {
     // cria um token de atualização que expira em 7 dias
-    return new dbRefreshToken.RefreshToken({
+    return new db.RefreshToken({
         accountId: account.id,
         token: randomTokenString(),
         expires: new Date(Date.now() + 7*24*60*60*1000),
