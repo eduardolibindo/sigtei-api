@@ -86,7 +86,7 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
     // validar
-    if (await db.Account.findOne({ where: { email: params.email } })) {
+    if (await dbAccount.Account.findOne({ where: { email: params.email } })) {
         // enviar erro já registrado no e-mail para evitar enumeração de conta
         return await sendAlreadyRegisteredEmail(params.email, origin);
     }
