@@ -17,7 +17,6 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 
 // rotas api
 app.use('/accounts', require('./msc/accounts/accounts.controller'));
-// app.use('/places', require('./msc/places/places.controller'));
 
 // rotas docs swagger
 app.use('/api-docs', require('_helpers/swagger'));
