@@ -200,6 +200,7 @@ async function createPlace(params) {
     }
 
     const places = new db.Places(params);
+    places.verified = Date.now();
 
     await places.save();
     return basicDetailsPlace(places);
