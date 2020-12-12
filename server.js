@@ -1,6 +1,5 @@
 ﻿require('rootpath')();
 const express = require('express');
-const sigtei = process.env.npm_package_name;
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
