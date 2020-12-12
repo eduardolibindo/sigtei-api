@@ -26,7 +26,14 @@ async function getById(id) {
 }
 
 async function create(params) {
+    // validar
+    if (await db.Places.findOne({ where: { place: params.place } })) {
+        throw 'Local "' + params.place + '" já está cadastrado';
+    }
+
     const places = new db.Places(params);
+    places.verified = Date.now();
+
     await places.save();
     return basicDetails(places);
 }
@@ -48,7 +55,6 @@ async function update(id, params) {
 
 }
 
-
 async function _delete(id) {
     const places = await getPlace(id);
     await places.destroy();
@@ -63,6 +69,6 @@ async function getPlace(id) {
 }
 
 function basicDetails(places) {
-    const { id, title, place, street, district, city, state, created, updated } = places;
-    return { id, title, place, street, district, city, state, created, updated };
+    const { id, title, place, street, district, city, state, created, updated, verified } = places;
+    return { id, title, place, street, district, city, state, created, updated, verified };
 }
