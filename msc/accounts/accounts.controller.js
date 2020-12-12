@@ -16,17 +16,17 @@ router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 
-router.get('/account', authorize(Role.Admin), getAll);
-router.get('/account:id', authorize(), getById);
-router.post('/account', authorize(Role.Admin), createSchema, create);
-router.put('/account:id', authorize(), updateSchema, update);
-router.delete('/account:id', authorize(), _delete);
+router.get('/', authorize(Role.Admin), getAll);
+router.get('/:id', authorize(), getById);
+router.post('/', authorize(Role.Admin), createSchema, create);
+router.put('/:id', authorize(), updateSchema, update);
+router.delete('/:id', authorize(), _delete);
 
-router.get('/place', authorize(Role.Admin), getplaceAll);
-router.get('/place:id', authorize(), getplaceById);
-router.post('/place', authorize(Role.Admin), createplaceSchema, createPlace);
-router.put('/place:id', authorize(), updateplaceSchema, updatePlace);
-router.delete('/place:id', authorize(), _deletePlace);
+router.get('/', authorize(Role.Admin), getplaceAll);
+router.get('/:id', authorize(), getplaceById);
+router.post('/', authorize(Role.Admin), createplaceSchema, createPlace);
+router.put('/:id', authorize(), updateplaceSchema, updatePlace);
+router.delete('/:id', authorize(), _deletePlace);
 
 
 module.exports = router;
