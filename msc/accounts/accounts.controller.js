@@ -170,7 +170,7 @@ function getAll(req, res, next) {
 }
 
 function getplaceAll(req, res, next) {
-    placesService.getAll()
+    accountService.getplaceAll()
         .then(places => res.json(places))
         .catch(next);
 }
@@ -192,7 +192,7 @@ function getplaceById(req, res, next) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
-    placesService.getById(req.params.id)
+    accountService.getplaceById(req.params.id)
         .then(places => places ? res.json(places) : res.sendStatus(404))
         .catch(next);
 }
@@ -234,7 +234,7 @@ function create(req, res, next) {
 }
 
 function createPlace(req, res, next) {
-    placesService.create(req.body)
+    accountService.createPlace(req.body)
         .then(places => res.json(places))
         .catch(next);
 }
@@ -298,7 +298,7 @@ function updatePlace(req, res, next) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
-    placesService.update(req.params.id, req.body)
+    accountService.updatePlace(req.params.id, req.body)
         .then(places => res.json(places))
         .catch(next);
 }
@@ -320,7 +320,7 @@ function _deletePlace(req, res, next) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
-    placesService.delete(req.params.id)
+    accountService.deletePlace(req.params.id)
         .then(() => res.json({ message: 'Local excluído com sucesso' }))
         .catch(next);
 }
