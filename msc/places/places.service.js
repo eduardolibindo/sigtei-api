@@ -8,12 +8,69 @@ const db = require('_helpers/db');
 const Role = require('_helpers/role');
 
 module.exports = {
+    authenticate,
+    refreshToken,
+    revokeToken,
     getAll,
     getById,
     create,
     update,
     delete: _delete
 };
+
+async function authenticate({ email, password, ipAddress }) {
+    const account = await db.Account.scope('withHash').findOne({ where: { email } });
+
+    if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
+        throw 'E-mail ou senha está incorreto';
+    }
+
+    // autenticação bem-sucedida, então gere jwt e atualize tokens
+    const jwtToken = generateJwtToken(account);
+    const refreshToken = generateRefreshToken(account, ipAddress);
+
+    // salvar token de atualização
+    await refreshToken.save();
+
+    // retorna detalhes básicos e tokens
+    return {
+        ...basicDetails(account),
+        jwtToken,
+        refreshToken: refreshToken.token
+    };
+}
+
+async function refreshToken({ token, ipAddress }) {
+    const refreshToken = await getRefreshToken(token);
+    const account = await refreshToken.getAccount();
+
+    // substitua o token de atualização antigo por um novo e salve
+    const newRefreshToken = generateRefreshToken(account, ipAddress);
+    refreshToken.revoked = Date.now();
+    refreshToken.revokedByIp = ipAddress;
+    refreshToken.replacedByToken = newRefreshToken.token;
+    await refreshToken.save();
+    await newRefreshToken.save();
+
+    // gerar novo jwt
+    const jwtToken = generateJwtToken(account);
+
+    // retorna detalhes básicos e tokens
+    return {
+        ...basicDetails(account),
+        jwtToken,
+        refreshToken: newRefreshToken.token
+    };
+}
+
+async function revokeToken({ token, ipAddress }) {
+    const refreshToken = await getRefreshToken(token);
+
+    // revogar o token e salvar
+    refreshToken.revoked = Date.now();
+    refreshToken.revokedByIp = ipAddress;
+    await refreshToken.save();
+}
 
 async function getAll() {
     const places = await db.Places.findALL();
