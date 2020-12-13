@@ -10,8 +10,14 @@ function model(sequelize) {
         district: { type: DataTypes.STRING, allowNull: false},
         city: { type: DataTypes.STRING, allowNull: false},
         state: { type: DataTypes.STRING, allowNull: false},
+        verified: { type: DataTypes.DATE },
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-        updated: { type: DataTypes.DATE }
+        updated: { type: DataTypes.DATE },
+        isVerified: {
+            type: DataTypes.VIRTUAL,
+            get() { return !!(this.verified); }
+        }
+
     };
 
     const options = {

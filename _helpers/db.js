@@ -24,9 +24,9 @@ async function initialize() {
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
     
-    db.Places.belongsTo(db.Account);
+    db.Places.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Places);
-
+    // db.Places.belongsTo(db.Account);
     
     // sincroniza todos os modelos com o banco de dados
     await sequelize.sync();

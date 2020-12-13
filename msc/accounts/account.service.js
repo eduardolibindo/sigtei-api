@@ -16,6 +16,7 @@ module.exports = {
     forgotPassword,
     validateResetToken,
     resetPassword,
+    
     getAll,
     getplaceAll,
     getById,
