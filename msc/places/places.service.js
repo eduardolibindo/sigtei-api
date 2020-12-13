@@ -7,7 +7,7 @@ const sendEmail = require('_helpers/send-email');
 
 // const db = require('_helpers/db');
 
-const { Account, Places, RefreshToken } = require('../../_helpers/db')
+const { Account, Places, RefreshToken } = require('../../_helpers/db');
 
 const Role = require('_helpers/role');
 

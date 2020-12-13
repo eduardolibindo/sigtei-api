@@ -20,9 +20,9 @@ async function initialize() {
     const sequelize = new Sequelize(database, user, password, { host:'l6slz5o3eduzatkw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', dialect: 'mysql' });
 
     // modelos de inicialização e adicioná-los ao objeto db exportado
-    const Account = AccountModel(sequelize, Sequelize);
-    const Places = PlacesModel(sequelize, Sequelize);
-    const RefreshToken = RefreshTokenModel(sequelize, Sequelize);
+    const Account = AccountModel(sequelize);
+    const Places = PlacesModel(sequelize);
+    const RefreshToken = RefreshTokenModel(sequelize);
 
     // define relacionamentos
     Account.hasMany(RefreshToken, { onDelete: 'CASCADE' });
