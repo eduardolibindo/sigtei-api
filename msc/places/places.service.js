@@ -1,11 +1,5 @@
-const config = require('config.json');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const crypto = require("crypto");
-const { Op } = require('sequelize');
-const sendEmail = require('_helpers/send-email');
-const db1 = require('_helpers/db');
-const Role = require('_helpers/role');
+const db = require('_helpers/db');
+
 
 module.exports = {
     // authenticate,
@@ -74,7 +68,7 @@ module.exports = {
 // }
 
 async function getplaceAll() {
-    const places = await db1.Places.findALL();
+    const places = await db.Places.findALL();
     return places.map(x => basicDetailsPlace(x));
 }
 
@@ -85,11 +79,11 @@ async function getplaceById(id) {
 
 async function createPlace(params) {
     // validar
-    if (await db1.Places.findOne({ where: { place: params.place } })) {
+    if (await db.Places.findOne({ where: { place: params.place } })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
-    const places = new db1.Places(params);
+    const places = new db.Places(params);
     places.verified = Date.now();
 
     await places.save();
@@ -100,7 +94,7 @@ async function updatePlace(id, params) {
     const places = await getPlace(id);
 
     // validar (se o endereco foi alterado)
-    if (params.place && places.place !== params.place && await db1.Places.findOne({ where: { place: params.place } })) {
+    if (params.place && places.place !== params.place && await db.Places.findOne({ where: { place: params.place } })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
@@ -127,7 +121,7 @@ async function _deletePlace(id) {
 // }
 
 async function getPlace(id) {
-    const places = await db1.Places.findByPk(id);
+    const places = await db.Places.findByPk(id);
     if (!places) throw 'local não encontrada';
     return places;
 }

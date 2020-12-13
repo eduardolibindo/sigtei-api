@@ -3,7 +3,6 @@ const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 
 module.exports = db = {};
-module.exports = db1 = {};
 
 initialize();
 
@@ -19,15 +18,12 @@ async function initialize() {
     // modelos de inicialização e adicioná-los ao objeto db exportado
     db.Account = require('../msc/accounts/account.model')(sequelize);
     db.RefreshToken = require('../msc/accounts/refresh-token.model')(sequelize);
-    db1.Places = require('../msc/places/places.model')(sequelize);
+    db.Places = require('../msc/places/places.model')(sequelize);
 
     // define relacionamentos
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
-    
-    db1.Places.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
-    db.RefreshToken.belongsTo(db1.Places);
-    db1.Places.belongsTo(db.Account);
+    db.Places.belongsTo(db.Account);
     
     // sincroniza todos os modelos com o banco de dados
     await sequelize.sync();
