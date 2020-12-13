@@ -22,11 +22,11 @@ router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 
-router.get('/place-all', authorize(Role.Admin), getplaceAll);
-router.get('/place-by-id:id', authorize(), getplaceById);
-router.post('/create-place', authorize(Role.Admin), createplaceSchema, createPlace);
-router.put('/update-place:id', authorize(), updateplaceSchema, updatePlace);
-router.delete('/delete-place:id', authorize(), _deletePlace);
+// router.get('/place-all', authorize(Role.Admin), getplaceAll);
+// router.get('/place-by-id:id', authorize(), getplaceById);
+// router.post('/create-place', authorize(Role.Admin), createplaceSchema, createPlace);
+// router.put('/update-place:id', authorize(), updateplaceSchema, updatePlace);
+// router.delete('/delete-place:id', authorize(), _deletePlace);
 
 
 module.exports = router;
