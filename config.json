@@ -1,10 +1,10 @@
 ﻿{
     "database": {
-        "host": "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        "host": "l6slz5o3eduzatkw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
         "port": "3306",
-        "user": "u2x716enc8vkpf51",
-        "password": "xcfqxwcoj8jp8crg",
-        "database": "f7ceshr1lvdu1yvq"
+        "user": "bgxue72sdy2wndn6",
+        "password": "frr517es6xf07jt0",
+        "database": "dbwwivlv4bbd4l56"
     },
     "secret": "NhDct_VWU0-uKR5oHX1TxAM0rvrya0qEWC95c95XxhBwwV0QNy0oGE60igXGTijmKANgvq8q2ZlEuLbr05XCEUAgmVDSoYgeNUeJ5zfXdOW6wQ4ZGP7FQ8TUqhMflfASBiSwq2qrj3CnYkSrsmT3Xm600wr5mDTWZ00UqSWI6D-BKtDw5RwuXO_TLk-27wYZ1syBqA_RuaLljddkWDBoe-BSa-AA",
     "emailFrom": "suporte.sigtei@gmail.com",
