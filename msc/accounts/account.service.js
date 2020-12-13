@@ -35,7 +35,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    const account = await Account.scope('withHash').findOne({ where: { email } });
+    const account = await Account.findOne({ where: { email } });
 
     if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
         throw 'E-mail ou senha está incorreto';
