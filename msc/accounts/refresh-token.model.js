@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = model;
+module.exports = refreshToken;
 
-function model(sequelize) {
+function refreshToken(sequelize) {
     const attributes = {
         token: { type: DataTypes.STRING },
         expires: { type: DataTypes.DATE },
