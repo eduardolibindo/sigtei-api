@@ -7,10 +7,6 @@ const sendEmail = require('_helpers/send-email');
 const db = require('_helpers/db');
 const Role = require('_helpers/role');
 
-var places = require('./places.model');
-var Places = places.places;
-
-
 module.exports = {
     // authenticate,
     // refreshToken,
@@ -78,7 +74,7 @@ module.exports = {
 // }
 
 async function getplaceAll() {
-    const places = await Places.findALL();
+    const places = await db.Places.findALL();
     return places.map(x => basicDetailsPlace(x));
 }
 
@@ -89,7 +85,7 @@ async function getplaceById(id) {
 
 async function createPlace(params) {
     // validar
-    if (await Places.findOne({ where: { place: params.place } })) {
+    if (await db.Places.findOne({ where: { place: params.place } })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
@@ -104,7 +100,7 @@ async function updatePlace(id, params) {
     const places = await getPlace(id);
 
     // validar (se o endereco foi alterado)
-    if (params.place && places.place !== params.place && await Places.findOne({ where: { place: params.place } })) {
+    if (params.place && places.place !== params.place && await db.Places.findOne({ where: { place: params.place } })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
@@ -131,7 +127,7 @@ async function _deletePlace(id) {
 // }
 
 async function getPlace(id) {
-    const places = await Places.findByPk(id);
+    const places = await db.Places.findByPk(id);
     if (!places) throw 'local não encontrada';
     return places;
 }
