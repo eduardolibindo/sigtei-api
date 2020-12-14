@@ -20,7 +20,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    getRefreshTokens
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -47,7 +48,7 @@ async function authenticate({ email, password, ipAddress }) {
 
 async function refreshToken({ token, ipAddress }) {
     const refreshToken = await getRefreshToken(token);
-    const account = await refreshToken.getAccount();
+    const { account } = refreshToken;
 
     // substitua o token de atualização antigo por um novo e salve
     const newRefreshToken = generateRefreshToken(account, ipAddress);
@@ -204,6 +205,15 @@ async function _delete(id) {
     await account.destroy();
 }
 
+async function getRefreshTokens(id) {
+    // check that user exists
+    await getAccount(id);
+
+    // return refresh tokens for user
+    const refreshTokens = await db.RefreshToken.find({ accountId: id });
+    return refreshTokens;
+}
+
 // funções auxiliares
 
 async function getAccount(id) {
@@ -213,7 +223,7 @@ async function getAccount(id) {
 }
 
 async function getRefreshToken(token) {
-    const refreshToken = await db.RefreshToken.findOne({ token });
+    const refreshToken = await db.RefreshToken.findOne({ token }).populate('account');
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
