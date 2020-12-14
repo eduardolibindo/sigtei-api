@@ -206,10 +206,10 @@ async function _delete(id) {
 }
 
 async function getRefreshTokens(id) {
-    // verifique se o usuário existe
+    // check that user exists
     await getAccount(id);
 
-    // retorna tokens de atualização para o usuário
+    // return refresh tokens for user
     const refreshTokens = await db.RefreshToken.find({ accountId: id });
     return refreshTokens;
 }
@@ -222,9 +222,14 @@ async function getAccount(id) {
     return account;
 }
 
-async function getRefreshToken(id) {
-    await getAccount(id);
-    const refreshToken = await db.RefreshToken.findOne({ accountId: id });
+async function getToken(tk) {
+    const token = await db.RefreshToken.find({ accountId: tk });
+    return token;    
+}
+
+
+async function getRefreshToken(token) {
+    const refreshToken = await db.RefreshToken.findOne({  where: { token:[token] } });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
