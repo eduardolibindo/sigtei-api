@@ -224,6 +224,12 @@ async function getAccount(id) {
 
 async function getRefreshToken(token) {
     const refreshToken = await db.RefreshToken.findOne({ where: { token: 'token' } });
+    if (refreshToken === null) {
+        console.log('Not found!');
+      } else {
+        console.log(refreshToken instanceof refreshToken); // true
+        console.log(refreshToken.token); // 'My Title'
+      }
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
