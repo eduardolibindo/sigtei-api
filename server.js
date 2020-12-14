@@ -1,18 +1,17 @@
 ﻿require('rootpath')();
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const app = express();
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
+const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 // rotas api
 app.use('/accounts', require('./accounts/accounts.controller'));
