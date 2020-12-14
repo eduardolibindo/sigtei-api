@@ -74,7 +74,7 @@ module.exports = {
 // }
 
 async function getplaceAll() {
-    const places = await db.Places.findALL();
+    const places = await db.Places.findAll();
     return places.map(x => basicDetailsPlace(x));
 }
 
