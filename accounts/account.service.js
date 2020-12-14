@@ -222,8 +222,8 @@ async function getAccount(id) {
     return account;
 }
 
-async function getRefreshToken(tokenNew) {
-    const refreshToken = await db.RefreshToken.findOne({  where: { token:tokenNew } });
+async function getRefreshToken(token) {
+    const refreshToken = await db.RefreshToken.findOne({ where: { token: 'token' } });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
