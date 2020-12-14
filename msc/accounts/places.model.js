@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = model;
+module.exports = Places;
 
-function model(sequelize) {
+function Places(sequelize) {
     const attributes = {
         title: { type: DataTypes.STRING, allowNull: false},
         place: { type: DataTypes.STRING, allowNull: false},
@@ -25,5 +25,5 @@ function model(sequelize) {
         timestamps: false
     };
 
-    return sequelize.define('places', attributes, options);
+    return sequelize.define('Places', attributes, options);
 }

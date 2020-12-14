@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = account;
+module.exports = Account;
 
-function account(sequelize) {
+function Account(sequelize) {
     const attributes = {
         email: { type: DataTypes.STRING, allowNull: false },
         passwordHash: { type: DataTypes.STRING, allowNull: false },
@@ -42,5 +42,5 @@ function account(sequelize) {
         }        
     };
 
-    return sequelize.define('account', attributes, options);
+    return sequelize.define('Account', attributes, options);
 }
