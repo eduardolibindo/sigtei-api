@@ -222,9 +222,9 @@ async function getAccount(id) {
     return account;
 }
 
-async function getRefreshToken(token) {
-    const refreshToken = await db.RefreshToken.findOne(token);
-    if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
+async function getRefreshToken(id) {
+    await getAccount(id);
+    const refreshToken = await db.RefreshToken.findOne({ accountId: id });
     return refreshToken;
 }
 
