@@ -230,7 +230,7 @@ async function getToken(tk) {
 
 async function getRefreshToken(token) {
     const refreshToken = await db.RefreshToken.findOne({  where: { token:[token] } });
-    if (!refreshToken || !refreshToken.isActive) throw console.log(refreshToken);
+    console.log(refreshToken);
     return refreshToken;
 }
 
