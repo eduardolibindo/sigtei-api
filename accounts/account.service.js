@@ -229,9 +229,9 @@ async function getToken(tk) {
 
 
 async function getRefreshToken(token) {
-    const refreshToken = await db.RefreshToken.findOne({  where: { token:[token] } });
-    console.log(refreshToken);
-    return refreshToken;
+    const refreshToken = await db.RefreshToken.findOne({  where: { token } });
+    // if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
+    return console.log(refreshToken);;
 }
 
 async function hash(password) {
