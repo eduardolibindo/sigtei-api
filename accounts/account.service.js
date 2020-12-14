@@ -224,7 +224,7 @@ async function getAccount(id) {
 
 async function getRefreshToken(id) {
     await getAccount(id);
-    const refreshToken = await db.RefreshToken.findOne({ accountId: id });
+    const refreshToken = await db.RefreshToken.findOne({ token: id });
     return refreshToken;
 }
 
