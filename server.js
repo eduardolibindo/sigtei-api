@@ -16,7 +16,7 @@ app.use('/places', require('./places/places.controller'));
 app.use('/api-docs', require('_helpers/swagger'));
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
