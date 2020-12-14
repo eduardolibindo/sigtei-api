@@ -2,6 +2,10 @@ const config = require('config.json');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 
+// const AccountModel = require('../accounts/account.model');
+// const RefreshTokenModel = require('../accounts/refresh-token.model');
+// const PlacesModel = require('../places/places.model');
+
 module.exports = db = {};
 
 initialize();
@@ -20,6 +24,11 @@ async function initialize() {
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
     db.Places = require('../places/places.model')(sequelize);
 
+    // const Account = AccountModel(sequelize);
+    // const RefreshToken = RefreshTokenModel(sequelize); 
+    // const Places = PlacesModel(sequelize);
+
+
     // define relacionamentos
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
@@ -29,4 +38,6 @@ async function initialize() {
     
     // sincroniza todos os modelos com o banco de dados
     await sequelize.sync();
+
+    // module.exports = {Account, RefreshToken, Places};
 }
