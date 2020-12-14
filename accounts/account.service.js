@@ -230,7 +230,7 @@ async function getRefreshToken(token) {
         console.log(refreshToken instanceof refreshToken); // true
         console.log(refreshToken.token); // 'My Title'
       }
-    if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
+   
     return refreshToken;
 }
 
