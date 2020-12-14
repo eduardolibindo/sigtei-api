@@ -223,7 +223,7 @@ async function getAccount(id) {
 }
 
 async function getRefreshToken(token) {
-    const refreshToken = await db.RefreshToken.findOne({  where: { token:'token' } });
+    const refreshToken = await db.RefreshToken.findOne({  where: { token:'1251' } });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
