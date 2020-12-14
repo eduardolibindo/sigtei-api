@@ -48,7 +48,8 @@ async function authenticate({ email, password, ipAddress }) {
 
 async function refreshToken({ token, ipAddress }) {
     const refreshToken = await getRefreshToken(token);
-    const account = await refreshToken.getAccount();
+    const { account } = refreshToken;
+    // const account = await refreshToken.getAccount();
 
     // substitua o token de atualização antigo por um novo e salve
     const newRefreshToken = generateRefreshToken(account, ipAddress);
@@ -222,8 +223,8 @@ async function getAccount(id) {
     return account;
 }
 
-async function getRefreshToken({token}) {
-    const refreshToken = await db.RefreshToken.findOne({  where: { token } });
+async function getRefreshToken(token) {
+    const refreshToken = await db.RefreshToken.findOne({ token });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
