@@ -4,11 +4,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const { Op } = require('sequelize');
 const sendEmail = require('_helpers/send-email');
-
-// const db = require('_helpers/db');
-
-const { Account, Places, RefreshToken } = require('../../_helpers/db');
-
+const db = require('_helpers/db');
 const Role = require('_helpers/role');
 
 module.exports = {
@@ -35,7 +31,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    const account = await Account.findOne({ where: { email } });
+    const account = await db.Account.scope('withHash').findOne({ where: { email } });
 
     if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
         throw 'E-mail ou senha está incorreto';
@@ -90,16 +86,16 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
     // validar
-    if (await Account.findOne({ where: { email: params.email } })) {
+    if (await db.Account.findOne({ where: { email: params.email } })) {
         // enviar erro já registrado no e-mail para evitar enumeração de conta
         return await sendAlreadyRegisteredEmail(params.email, origin);
     }
 
     // criar objeto de conta
-    const account = new Account(params);
+    const account = new db.Account(params);
 
     // a primeira conta registrada é um administrador
-    const isFirstAccount = (await Account.count()) === 0;
+    const isFirstAccount = (await db.Account.count()) === 0;
     account.role = isFirstAccount ? Role.Admin : Role.Estudante;
     account.verificationToken = randomTokenString();
 
@@ -114,7 +110,7 @@ async function register(params, origin) {
 }
 
 async function verifyEmail({ token }) {
-    const account = await Account.findOne({ where: { verificationToken: token } });
+    const account = await db.Account.findOne({ where: { verificationToken: token } });
 
     if (!account) throw 'Falha na verificação';
 
@@ -124,7 +120,7 @@ async function verifyEmail({ token }) {
 }
 
 async function forgotPassword({ email }, origin) {
-    const account = await Account.findOne({ where: { email } });
+    const account = await db.Account.findOne({ where: { email } });
 
     // sempre retorna uma resposta ok para evitar a enumeração de e-mail
     if (!account) return;
@@ -139,7 +135,7 @@ async function forgotPassword({ email }, origin) {
 }
 
 async function validateResetToken({ token }) {
-    const account = await Account.findOne({
+    const account = await db.Account.findOne({
         where: {
             resetToken: token,
             resetTokenExpires: { [Op.gt]: Date.now() }
@@ -162,12 +158,12 @@ async function resetPassword({ token, password }) {
 }
 
 async function getAll() {
-    const accounts = await Account.findAll();
+    const accounts = await db.Account.findAll();
     return accounts.map(x => basicDetails(x));
 }
 
 // async function getplaceAll() {
-//     const places = await Places.findALL();
+//     const places = await db.Places.findALL();
 //     return places.map(x => basicDetailsPlace(x));
 // }
 
@@ -183,11 +179,11 @@ async function getById(id) {
 
 async function create(params) {
     // validar
-    if (await Account.findOne({ where: { email: params.email } })) {
+    if (await db.Account.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" já está registrado';
     }
 
-    const account = new Account(params);
+    const account = new db.Account(params);
     account.verified = Date.now();
 
     // senha hash
@@ -216,7 +212,7 @@ async function update(id, params) {
     const account = await getAccount(id);
 
     // validar (se o e-mail foi alterado)
-    if (params.email && account.email !== params.email && await Account.findOne({ where: { email: params.email } })) {
+    if (params.email && account.email !== params.email && await db.Account.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" já está ocupado';
     }
 
@@ -263,7 +259,7 @@ async function _delete(id) {
 // funções auxiliares
 
 async function getAccount(id) {
-    const account = await Account.findByPk(id);
+    const account = await db.Account.findByPk(id);
     if (!account) throw 'Conta não encontrada';
     return account;
 }
@@ -275,7 +271,7 @@ async function getAccount(id) {
 // }
 
 async function getRefreshToken(token) {
-    const refreshToken = await RefreshToken.findOne({ where: { token } });
+    const refreshToken = await db.RefreshToken.findOne({ where: { token } });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
@@ -291,7 +287,7 @@ function generateJwtToken(account) {
 
 function generateRefreshToken(account, ipAddress) {
     // cria um token de atualização que expira em 7 dias
-    return new RefreshToken({
+    return new db.RefreshToken({
         accountId: account.id,
         token: randomTokenString(),
         expires: new Date(Date.now() + 7*24*60*60*1000),
