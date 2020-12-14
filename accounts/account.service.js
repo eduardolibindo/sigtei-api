@@ -223,15 +223,15 @@ async function getAccount(id) {
 }
 
 async function getToken(tk) {
-    const token = await db.RefreshToken.find({ accountId: tk });
-    return token;    
+    const token = await db.RefreshToken.findByPk(tk);
+    if (!token) throw 'Token não encontrado';
+    return token;   
 }
 
-
 async function getRefreshToken(token) {
-    const refreshToken = await db.RefreshToken.findOne({  where: { token } });
-    // if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
-    return console.log(refreshToken);;
+    const refreshToken = await db.RefreshToken.findOne({ where: { token } });
+    if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
+    return refreshToken;
 }
 
 async function hash(password) {
