@@ -187,7 +187,7 @@ function getRefreshTokens(req, res, next) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
-    userService.getRefreshTokens(req.params.id)
+    accountService.getRefreshTokens(req.params.id)
         .then(tokens => tokens ? res.json(tokens) : res.sendStatus(404))
         .catch(next);
 }
