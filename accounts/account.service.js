@@ -16,18 +16,11 @@ module.exports = {
     forgotPassword,
     validateResetToken,
     resetPassword,
-    
     getAll,
     getById,
     create,
     update,
-    delete: _delete,
-
-    // getplaceAll,
-    // getplaceById,
-    // createPlace,
-    // updatePlace,
-    // deletePlace: _deletePlace
+    delete: _delete
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -54,10 +47,7 @@ async function authenticate({ email, password, ipAddress }) {
 
 async function refreshToken({ token, ipAddress }) {
     const refreshToken = await getRefreshToken(token);
-
-    const account = await getAccount();
-
-    // const account = await refreshToken.getAccount();
+    const account = await refreshToken.db.Account.findByPk(id);
 
     // substitua o token de atualização antigo por um novo e salve
     const newRefreshToken = generateRefreshToken(account, ipAddress);
@@ -165,20 +155,10 @@ async function getAll() {
     return accounts.map(x => basicDetails(x));
 }
 
-// async function getplaceAll() {
-//     const places = await db.Places.findALL();
-//     return places.map(x => basicDetailsPlace(x));
-// }
-
 async function getById(id) {
     const account = await getAccount(id);
     return basicDetails(account);
 }
-
-// async function getplaceById(id) {
-//     const places = await getPlace(id);
-//     return basicDetailsPlace(places);
-// }
 
 async function create(params) {
     // validar
@@ -197,19 +177,6 @@ async function create(params) {
 
     return basicDetails(account);
 }
-
-// async function createPlace(params) {
-//     // validar
-//     if (await db.Places.findOne({ where: { place: params.place } })) {
-//         throw 'Local "' + params.place + '" já está cadastrado';
-//     }
-
-//     const places = new db.Places(params);
-//     places.verified = Date.now();
-
-//     await places.save();
-//     return basicDetailsPlace(places);
-// }
 
 async function update(id, params) {
     const account = await getAccount(id);
@@ -232,32 +199,10 @@ async function update(id, params) {
     return basicDetails(account);
 }
 
-// async function updatePlace(id, params) {
-//     const places = await getPlace(id);
-
-//     // validar (se o endereco foi alterado)
-//     if (params.place && places.place !== params.place && await db.Places.findOne({ where: { place: params.place } })) {
-//         throw 'Local "' + params.place + '" já está cadastrado';
-//     }
-
-//     // copia os parâmetros para a conta e salva
-//     Object.assign(places, params);
-//     places.updated = Date.now();
-//     await places.save();
-
-//     return basicDetailsPlace(places);
-
-// }
-
 async function _delete(id) {
     const account = await getAccount(id);
     await account.destroy();
 }
-
-// async function _deletePlace(id) {
-//     const places = await getPlace(id);
-//     await places.destroy();
-// }
 
 // funções auxiliares
 
@@ -267,15 +212,9 @@ async function getAccount(id) {
     return account;
 }
 
-// async function getPlace(id) {
-//     const places = await db.Places.findByPk(id);
-//     if (!places) throw 'local não encontrada';
-//     return places;
-// }
-
 async function getRefreshToken(token) {
     const refreshToken = await db.RefreshToken.findOne({ where: { token } });
-    if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
+    if (!refreshToken || !refreshToken.isActive) throw 'Invalid token';
     return refreshToken;
 }
 
@@ -306,12 +245,6 @@ function basicDetails(account) {
     const { id, title, firstName, lastName, email, rg, institution, course, phone, address, role, created, updated, isVerified } = account;
     return { id, title, firstName, lastName, email, rg, institution, course, phone, address, role, created, updated, isVerified };
 }
-
-
-// function basicDetailsPlace(places) {
-//     const { id, title, place, street, district, city, state, created, updated, verified } = places;
-//     return { id, title, place, street, district, city, state, created, updated, verified };
-// }
 
 async function sendVerificationEmail(account, origin) {
     let message;
