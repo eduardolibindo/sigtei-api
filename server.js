@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+app.use(cors());
 
 // rotas api
 app.use('/accounts', require('./mongo/accounts/account.controller'));
