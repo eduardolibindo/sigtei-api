@@ -1,11 +1,10 @@
-﻿const config = require('../../config.json');
+﻿const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const { Op } = require('sequelize');
-const sendEmail = require('../../_helpers/send-email');
+const sendEmail = require('_helpers/send-email');
 const mongodb = require('../../_helpers/mongodb');
-const Role = require('../../_helpers/role');
+const Role = require('_helpers/role');
 
 module.exports = {
     authenticate,
@@ -89,7 +88,7 @@ async function register(params, origin) {
     const account = new mongodb.Account(params);
 
     // a primeira conta registrada é um administrador
-    const isFirstAccount = (await mongodb.Account.count()) === 0;
+    const isFirstAccount = (await mongodb.Account.countDocuments({})) === 0;
     account.role = isFirstAccount ? Role.Admin : Role.Estudante;
     account.verificationToken = randomTokenString();
 
@@ -104,7 +103,7 @@ async function register(params, origin) {
 }
 
 async function verifyEmail({ token }) {
-    const account = await mongodb.Account.findOne({ where: { verificationToken: token } });
+    const account = await mongodb.Account.findOne({ verificationToken: token });
 
     if (!account) throw 'Falha na verificação';
 
@@ -114,7 +113,7 @@ async function verifyEmail({ token }) {
 }
 
 async function forgotPassword({ email }, origin) {
-    const account = await mongodb.Account.findOne({ where: { email } });
+    const account = await mongodb.Account.findOne({ email });
 
     // sempre retorna uma resposta ok para evitar a enumeração de e-mail
     if (!account) return;

@@ -61,9 +61,9 @@ async function _deletePlace(id) {
 }
 
 async function getPlace(id) {
-    if (!mongodb.isValidId(id)) throw 'Account not found';
+    if (!mongodb.isValidId(id)) throw 'Local não encontrado';
     const places = await mongodb.Places.findById(id);
-    if (!places) throw 'local não encontrada';
+    if (!places) throw 'local não encontrado';
     return places;
 }
 
