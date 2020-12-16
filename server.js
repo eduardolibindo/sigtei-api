@@ -14,8 +14,8 @@ app.use(cookieParser());
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // rotas api
-app.use('/accounts', require('./accounts/accounts.controller'));
-app.use('/places', require('./places/places.controller'));
+app.use('/accounts', require('./mongo/accounts/account.controller'));
+app.use('/places', require('./mongo/places/places.controller'));
 
 // rotas docs swagger
 app.use('/api-docs', require('_helpers/swagger'));
