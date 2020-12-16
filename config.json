@@ -1,5 +1,5 @@
 ﻿{
-    "connectionString":"mongodb+srv://sigtei_mongodb:<S1gtei2246>@clustersigtei.nw3rb.mongodb.net/<sigteidb>?retryWrites=true&w=majority",
+    "connectionString":"mongodb+srv://sigtei_mongodb:S1gtei2246@clustersigtei.nw3rb.mongodb.net/sigtei_db?retryWrites=true&w=majority",
     "database": {
         "host": "l6slz5o3eduzatkw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
         "port": "3306",

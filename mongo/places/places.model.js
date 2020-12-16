@@ -18,15 +18,4 @@ schema.virtual('isVerified').get(function () {
     return !!(this.verified);
 });
 
-schema.set('toJSON', {
-    virtuals: true,
-    versionKey: false,
-    transform: function (doc, ret) {
-        // remove these props when object is serialized
-        delete ret._id;
-        delete ret.id;
-        delete ret.account;
-    }
-});
-
 module.exports = mongoose.model('Places', schema);
