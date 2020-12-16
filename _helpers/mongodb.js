@@ -7,9 +7,9 @@ mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionO
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    Account: require('mongo/accounts/account.model'),
-    RefreshToken: require('mongo/users/refresh-token.model'),
-    Places: required('mongo/places/places.model'),
+    Account: require('../mongo/accounts/account.model'),
+    RefreshToken: require('../mongo/accounts/refresh-token.model'),
+    Places: require('../mongo/places/places.model.js'),
     isValidId
 };
 

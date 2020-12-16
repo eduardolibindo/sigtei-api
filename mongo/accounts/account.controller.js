@@ -1,9 +1,9 @@
 ﻿const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
-const validateRequest = require('_middleware/validate-request');
-const authorize = require('_middleware/authorize')
-const Role = require('_helpers/role');
+const validateRequest = require('../../_middleware/validate-request');
+const authorize = require('../../_middleware//authorize')
+const Role = require('../../_helpers/role');
 const accountService = require('./account.service');
 
 // rotas
@@ -22,7 +22,6 @@ router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 router.get('/refresh-tokens', authorize(Role.Admin), getRefreshTokens);
-router.get('/get-token/:id', authorize(), getToken);
 
 
 module.exports = router;
@@ -186,17 +185,6 @@ function getRefreshTokens(req, res, next) {
         .then(tokens => tokens ? res.json(tokens) : res.sendStatus(404))
         .catch(next);
 }
-
-function getToken(req, res, next) {
-    // os usuários podem obter seus próprios token e os administradores podem obter qualquer token
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Não autorizado' });
-    }
-    accountService.getToken(req.params.token)
-        .then(account => account ? res.json(account) : res.sendStatus(404))
-        .catch(next);
-}
-
 
 function createSchema(req, res, next) {
     const schema = Joi.object({

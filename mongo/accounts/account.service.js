@@ -1,11 +1,11 @@
-﻿const config = require('config.json');
+﻿const config = require('../../config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const { Op } = require('sequelize');
-const sendEmail = require('_helpers/send-email');
-const mongodb = require('_helpers/mongodb');
-const Role = require('_helpers/role');
+const sendEmail = require('../../_helpers/send-email');
+const mongodb = require('../../_helpers/mongodb');
+const Role = require('../../_helpers/role');
 
 module.exports = {
     authenticate,
@@ -21,8 +21,7 @@ module.exports = {
     create,
     update,
     delete: _delete,
-    getRefreshTokens,
-    getToken
+    getRefreshTokens
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -225,13 +224,6 @@ async function getAccount(id) {
     const account = await mongodb.Account.findById(id);
     if (!account) throw 'Conta não encontrada';
     return account;
-}
-
-async function getToken(token) {
-    if (!mongodb.isValidId(token)) throw 'Token não encontrado';
-    const token = await mongodb.RefreshToken.findById(token);
-    if (!token) throw 'Token não encontrado';
-    return token;   
 }
 
 async function getRefreshToken(token) {
