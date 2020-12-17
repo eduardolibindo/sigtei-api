@@ -34,7 +34,7 @@ schema.set('toJSON', {
     versionKey: false,
     transform: function (doc, ret) {
         // remova esses adereços quando o objeto for serializado
-        // delete ret._id;
+        delete ret._id;
         delete ret.passwordHash;
     }
 });
