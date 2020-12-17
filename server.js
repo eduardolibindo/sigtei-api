@@ -1,31 +1,14 @@
-﻿require('rootpath')();
+﻿﻿require('rootpath')();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-var session = require('express-session');
-var passport = require('passport');
-var flash = require('connect-flash');
-const expressHbs = require('express-handlebars');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
-app.engine('.hbs', expressHbs({ defaultLayout: 'layout', extname: '.hbs' }))
-
-app.set('view engine', '.hbs');
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.use(session({ secret: 'mysupersecret', resave: false, saveUninitialized: false }))
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));

@@ -17,8 +17,8 @@ function authorize(roles = []) {
 
         // autorizar com base na função do usuário
         async (req, res, next) => {
-            const account = await mongodb.Account.findById(req.user._id);
-            const refreshTokens = await mongodb.RefreshToken.find({ account: account._id });
+            const account = await mongodb.Account.findOne({ _id: req.user.id });
+            const refreshTokens = await mongodb.RefreshToken.findOne({ account: account._id });
 
             if (!account || (roles.length && !roles.includes(account.role))) {
                 // conta não existe mais ou função não autorizada
