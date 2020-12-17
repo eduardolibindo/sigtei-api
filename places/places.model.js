@@ -4,6 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
+        type: { type: DataTypes.STRING, allowNull: false},
         title: { type: DataTypes.STRING, allowNull: false},
         place: { type: DataTypes.STRING, allowNull: false},
         street: { type: DataTypes.STRING, allowNull: false},

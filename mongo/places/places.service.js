@@ -68,6 +68,6 @@ async function getPlace(id) {
 }
 
 function basicDetailsPlace(places) {
-    const { id, title, place, street, district, city, state, created, updated, isVerified } = places;
-    return { id, title, place, street, district, city, state, created, updated, isVerified };
+    const { id, type, title, place, street, district, city, state, created, updated, isVerified } = places;
+    return { id, type, title, place, street, district, city, state, created, updated, isVerified };
 }

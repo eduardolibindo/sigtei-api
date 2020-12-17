@@ -34,6 +34,7 @@ function getplaceById(req, res, next) {
 
 function createplaceSchema(req, res, next) {
     const schema = Joi.object({
+        type: Joi.string().required(),
         title: Joi.string().required(),
         place: Joi.string().required(),
         street: Joi.string().required(),
@@ -52,6 +53,7 @@ function createPlace(req, res, next) {
 
 function updateplaceSchema(req, res, next) {
     const schemaRules = {
+        type: Joi.string().empty(''),
         title: Joi.string().empty(''),
         place: Joi.string().empty(''),
         street: Joi.string().empty(''),

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
     account: { type: Schema.Types.ObjectId, ref: 'Account' },
+    type: { type: String, required: true },
     title: { type: String, required: true },
     place: { type: String, required: true },
     street: { type: String, required: true },
