@@ -11,7 +11,7 @@ const expressHbs = require('express-handlebars');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
-app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname:'.hbs'}))
+app.engine('.hbs', expressHbs({ defaultLayout: 'layout', extname: '.hbs' }))
 
 app.set('view engine', '.hbs');
 
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(session({secret: 'mysupersecret', resave: false, saveUninitialized: false}))
+app.use(session({ secret: 'mysupersecret', resave: false, saveUninitialized: false }))
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -44,14 +44,20 @@ app.use(errorHandler);
 // app.get("/*", (req, res) => {
 //     res.sendFile(path.resolve(__dirname, "dist", "sigtei", "index.html"));
 // });
- 
+
 // app.use(express.static(`${__dirname}/dist/sigtei`));
 // app.get('/*', (req, res) => {
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
+
+    // Cookies that have not been signed
+    console.log('Cookies: ', req.cookies)
+
+    // Cookies that have been signed
+    console.log('Signed Cookies: ', req.signedCookies)
 })
 
 
