@@ -24,7 +24,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    const account = await mongodb.Account.findOne({ email });
+    const account = await mongodb.Account.findOne({  email  });
 
     if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
         throw 'E-mail ou senha está incorreto';
@@ -79,7 +79,7 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
     // validar
-    if (await mongodb.Account.findOne({ email: params.email })) {
+    if (await mongodb.Account.findOne({  email: params.email })) {
         // enviar erro já registrado no e-mail para evitar enumeração de conta
         return await sendAlreadyRegisteredEmail(params.email, origin);
     }
@@ -119,8 +119,10 @@ async function forgotPassword({ email }, origin) {
     if (!account) return;
 
     // cria token de redefinição que expira após 24 horas
-    account.resetToken = randomTokenString();
-    account.resetTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    account.resetToken = {
+        token: randomTokenString(),
+        expires: new Date(Date.now() + 24*60*60*1000)
+    };
     await account.save();
 
     // enviar email
@@ -147,9 +149,9 @@ async function resetPassword({ token, password }) {
     if (!account) throw 'Token inválido';
 
     // atualize a senha e remova o token de redefinição
-    account.passwordHash = await hash(password);
+    account.passwordHash = hash(password);
     account.passwordReset = Date.now();
-    account.resetToken = null;
+    account.resetToken = undefined;
     await account.save();
 }
 
@@ -173,7 +175,7 @@ async function create(params) {
     account.verified = Date.now();
 
     // senha hash
-    account.passwordHash = await hash(params.password);
+    account.passwordHash = hash(params.password);
 
     // salvar conta
     await account.save();
@@ -191,7 +193,7 @@ async function update(id, params) {
 
     // senha hash se foi inserida
     if (params.password) {
-        params.passwordHash = await hash(params.password);
+        params.passwordHash = hash(params.password);
     }
 
     // copia os parâmetros para a conta e salva
@@ -226,15 +228,13 @@ async function getAccount(id) {
 }
 
 async function getRefreshToken(token) {
-    const refreshToken = await mongodb.RefreshToken.findOne({ token: token }).populate("Account").exec((err, Account) => {
-        console.log(Account);
-    });
+    const refreshToken = await mongodb.RefreshToken.findOne({ token }).populate('account');
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
 
 async function hash(password) {
-    return await bcrypt.hash(password, 10);
+    return bcrypt.hash(password, 10);
 }
 
 function generateJwtToken(account) {
@@ -247,7 +247,7 @@ function generateRefreshToken(account, ipAddress) {
     return new mongodb.RefreshToken({
         account: account.id,
         token: randomTokenString(),
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 7*24*60*60*1000),
         createdByIp: ipAddress
     });
 }

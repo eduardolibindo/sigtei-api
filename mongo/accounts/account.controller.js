@@ -2,7 +2,7 @@
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../../_middleware/validate-request');
-const authorize = require('../../_middleware//authorize')
+const authorize = require('../../_middleware/authorize');
 const Role = require('../../_helpers/role');
 const accountService = require('./account.service');
 
@@ -166,7 +166,7 @@ function getAll(req, res, next) {
 
 function getById(req, res, next) {
     // os usuários podem obter suas próprias contas e os administradores podem obter qualquer conta
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -177,7 +177,7 @@ function getById(req, res, next) {
 
 function getRefreshTokens(req, res, next) {
     // users can get their own refresh tokens and admins can get any user's refresh tokens
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -239,7 +239,7 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
     // os usuários podem atualizar suas próprias contas e os administradores podem atualizar qualquer conta
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -250,7 +250,7 @@ function update(req, res, next) {
 
 function _delete(req, res, next) {
     // os usuários podem excluir suas próprias contas e os administradores podem excluir qualquer conta
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 

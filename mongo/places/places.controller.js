@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../../_middleware/validate-request');
-const authorize = require('../../_middleware//authorize')
+const authorize = require('../../_middleware/authorize');
 const Role = require('../../_helpers/role');
 const placesService = require('./places.service');
 
@@ -23,7 +23,7 @@ function getplaceAll(req, res, next) {
 
 function getplaceById(req, res, next) {
     // os usuários podem obter seus próprios enderecos e os administradores podem obter qualquer endereco
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin && req.user.role !== Role.Motorista) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -71,7 +71,7 @@ function updateplaceSchema(req, res, next) {
 
 function updatePlace(req, res, next) {
     // os usuários podem atualizar suas próprias contas e os administradores podem atualizar qualquer conta
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin  && req.user.role !== Role.Motorista) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -82,7 +82,7 @@ function updatePlace(req, res, next) {
 
 function _deletePlace(req, res, next) {
     // os usuários podem excluir suas próprias contas e os administradores podem excluir qualquer conta
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin && req.user.role !== Role.Motorista) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
