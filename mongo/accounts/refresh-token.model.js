@@ -24,7 +24,7 @@ schema.virtual('isActive').get(function () {
 //     virtuals: true,
 //     versionKey: false,
 //     transform: function (doc, ret) {
-//         // remove these props when object is serialized
+//         // remova esses adereços quando o objeto for serializado
 //         delete ret._id;
 //         delete ret.id;
 //         delete ret.account;

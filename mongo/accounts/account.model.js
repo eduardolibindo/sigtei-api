@@ -23,8 +23,6 @@ const schema = new Schema({
     passwordReset: Date,
     created: { type: Date, default: Date.now },
     updated: Date
-
-    
 });
 
 schema.virtual('isVerified').get(function () {
@@ -35,8 +33,8 @@ schema.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
-        // remove these props when object is serialized
-        delete ret._id;
+        // remova esses adereços quando o objeto for serializado
+        // delete ret._id;
         delete ret.passwordHash;
     }
 });
