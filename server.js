@@ -18,6 +18,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({secret: 'mysupersecret', resave: false, saveUninitialized: false}))
+app.use(flash());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
