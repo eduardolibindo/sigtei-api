@@ -24,7 +24,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    const account = await mongodb.Account.findOne({  email  });
+    const account = await mongodb.Account.findOne({ email });
 
     if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
         throw 'E-mail ou senha está incorreto';
@@ -79,7 +79,7 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
     // validar
-    if (await mongodb.Account.findOne({  email: params.email })) {
+    if (await mongodb.Account.findOne({ email: params.email })) {
         // enviar erro já registrado no e-mail para evitar enumeração de conta
         return await sendAlreadyRegisteredEmail(params.email, origin);
     }
@@ -120,7 +120,7 @@ async function forgotPassword({ email }, origin) {
 
     // cria token de redefinição que expira após 24 horas
     account.resetToken = randomTokenString();
-    account.resetTokenExpires = new Date(Date.now() + 24*60*60*1000);
+    account.resetTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
     await account.save();
 
     // enviar email
@@ -226,7 +226,9 @@ async function getAccount(id) {
 }
 
 async function getRefreshToken(token) {
-    const refreshToken = await mongodb.RefreshToken.findOne({ token: token }).populate('Account');
+    const refreshToken = await mongodb.RefreshToken.findOne({ token: token }).populate("Account").exec((err, Account) => {
+        console.log(Account);
+    });
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
@@ -245,7 +247,7 @@ function generateRefreshToken(account, ipAddress) {
     return new mongodb.RefreshToken({
         account: account.id,
         token: randomTokenString(),
-        expires: new Date(Date.now() + 7*24*60*60*1000),
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         createdByIp: ipAddress
     });
 }
