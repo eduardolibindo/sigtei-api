@@ -26,7 +26,7 @@ module.exports = {
 async function authenticate({ email, password, ipAddress }) {
     const account = await mongodb.Account.findOne({  email  });
 
-    if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
+    if (!account || !account.isVerified || (!await bcrypt.compare(password, account.passwordHash))) {
         throw 'E-mail ou senha está incorreto';
     }
 
@@ -93,7 +93,7 @@ async function register(params, origin) {
     account.verificationToken = randomTokenString();
 
     // senha hash
-    account.passwordHash = await hash(params.password);
+    account.passwordHash = hash(params.password);
 
     // salvar conta
     await account.save();
@@ -234,7 +234,8 @@ async function getRefreshToken(token) {
 }
 
 async function hash(password) {
-    return bcrypt.hashSync(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
 }
 
 function generateJwtToken(account) {
