@@ -7,8 +7,8 @@ mongoose.Promise = global.Promise;
 module.exports = {
     Account: require('../mongo/accounts/account.model'),
     RefreshToken: require('../mongo/accounts/refresh-token.model'),
-    Places: require('../mongo/places/places.model'),
     Schedules: require('../mongo/schedules/schedules.model'),
+    Places: require('../mongo/places/places.model'),
     isValidId
 };
 
