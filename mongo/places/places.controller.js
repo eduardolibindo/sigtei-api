@@ -6,7 +6,7 @@ const authorize = require('../../_middleware/authorize');
 const Role = require('../../_helpers/role');
 const placesService = require('./places.service');
 
-// rotas
+//rotas
 router.get('/', authorize(Role.Admin), getplaceAll);
 router.get('/:id', authorize(), getplaceById);
 router.post('/', authorize(Role.Admin), createplaceSchema, createPlace);
