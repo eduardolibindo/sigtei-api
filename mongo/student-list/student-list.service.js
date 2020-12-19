@@ -68,6 +68,6 @@ async function getStudentList(id) {
 }
 
 function basicDetailsStudentList(studentLists) {
-    const { id, idStudent, firstName, lastName, title, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
-    return { id, idStudent, firstName, lastName, title, rg, institution, course, phone, address, created, updated, isVerified };
+    const { id, title, firstName, lastName, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
+    return { id, title, firstName, lastName,rg, institution, course, phone, address, created, updated, isVerified };
 }

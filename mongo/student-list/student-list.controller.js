@@ -34,12 +34,12 @@ function getstudentListById(req, res, next) {
 
 function createStudentListSchema(req, res, next) {
     const schema = Joi.object({
-        idStudent: Joi.string().required(),
+        title: Joi.string().required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
-        title: Joi.string().required(),
         rg: Joi.string().required(),
         institution: Joi.string().required(),
+        course: Joi.string().required(),
         phone: Joi.string().required(),
         address: Joi.string().required(),
     });
@@ -54,12 +54,12 @@ function getcreateStudentList(req, res, next) {
 
 function updateStudentListSchema(req, res, next) {
     const schemaRules = {
-        idStudent: Joi.string().empty(''),
+        title: Joi.string().empty(''),
         firstName: Joi.string().empty(''),
         lastName: Joi.string().empty(''),
-        title: Joi.string().empty(''),
         rg: Joi.string().empty(''),
         institution: Joi.string().empty(''),
+        course: Joi.string().empty(''),
         phone: Joi.string().empty(''),
         address: Joi.string().empty(''),
     };

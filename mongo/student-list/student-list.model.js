@@ -3,10 +3,9 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
     account: { type: Schema.Types.ObjectId, ref: 'Account' },
-    idStudent: { type: String, required: true },
+    title: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    title: { type: String, required: true },
     rg: { type: String, required: true },
     institution: { type: String, required: true },
     course: { type: String, required: true },
