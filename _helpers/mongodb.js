@@ -9,6 +9,7 @@ module.exports = {
     Account: require('../mongo/accounts/account.model'),
     RefreshToken: require('../mongo/accounts/refresh-token.model'),
     Places: require('../mongo/places/places.model'),
+    StudentList: require('../mongo/student-list/student-list.model'),
     isValidId
 };
 

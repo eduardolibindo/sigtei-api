@@ -17,6 +17,7 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 app.use('/accounts', require('./mongo/accounts/account.controller'));
 app.use('/places', require('./mongo/places/places.controller'));
 app.use('/schedules', require('./mongo/schedules/schedules.controller'));
+app.use('/student-list', require('./mongo/student-list/student-list.controller'));
 
 // rotas docs swagger
 app.use('/api-docs', require('_helpers/swagger'));
