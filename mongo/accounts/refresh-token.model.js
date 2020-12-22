@@ -20,15 +20,15 @@ schema.virtual('isActive').get(function () {
     return !this.revoked && !this.isExpired;
 });
 
-// schema.set('toJSON', {
-//     virtuals: true,
-//     versionKey: false,
-//     transform: function (doc, ret) {
-//         // remova esses adereços quando o objeto for serializado
-//         delete ret._id;
-//         delete ret.id;
-//         delete ret.account;
-//     }
-// });
+schema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        // remova esses adereços quando o objeto for serializado
+        delete ret._id;
+        delete ret.id;
+        delete ret.account;
+    }
+});
 
 module.exports = mongoose.model('RefreshToken', schema);

@@ -49,8 +49,6 @@ async function refreshToken({ token, ipAddress }) {
     const refreshToken = await getRefreshToken(token);
     const { account } = refreshToken;
 
-    // teste
-
     // substitua o token de atualização antigo por um novo e salve
     const newRefreshToken = generateRefreshToken(account, ipAddress);
     refreshToken.revoked = Date.now();
@@ -229,7 +227,7 @@ async function getAccount(id) {
     return account;
 }
 
-async function getRefreshToken(tokem) {
+async function getRefreshToken(token) {
     const refreshToken = await mongodb.RefreshToken.findOne({ token }).populate('account');
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;

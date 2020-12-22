@@ -17,12 +17,10 @@ router.post('/validate-reset-token', validateResetTokenSchema, validateResetToke
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 
 router.get('/', authorize(Role.Admin), getAll);
-router.get('/current', authorize(), getCurrent);
 router.get('/:id', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
-router.get('/refresh-tokens', authorize(Role.Admin), getRefreshTokens);
 
 
 module.exports = router;
@@ -165,11 +163,6 @@ function getAll(req, res, next) {
         .catch(next);
 }
 
-
-function getCurrent(req, res, next) {
-    res.json(req.user);
-}
-
 function getById(req, res, next) {
     // os usuários podem obter suas próprias contas e os administradores podem obter qualquer conta
     if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
@@ -178,17 +171,6 @@ function getById(req, res, next) {
 
     accountService.getById(req.params.id)
         .then(account => account ? res.json(account) : res.sendStatus(404))
-        .catch(next);
-}
-
-function getRefreshTokens(req, res, next) {
-    // users can get their own refresh tokens and admins can get any user's refresh tokens
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Não autorizado' });
-    }
-
-    accountService.getRefreshTokens(req.params.id)
-        .then(tokens => tokens ? res.json(tokens) : res.sendStatus(404))
         .catch(next);
 }
 
