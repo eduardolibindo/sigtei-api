@@ -20,7 +20,7 @@ function authorize(roles = []) {
             //const account = await mongodb.Account.findOne({ _id: req.user.id });
             //const refreshTokens = await mongodb.RefreshToken.findOne({ account: account._id });
 
-             const account = await mongodb.Account.findById({ _id: '5fe169c1214b730004390e95' });
+             const account = await mongodb.Account.findById('5fe169c1214b730004390e95');
              const refreshTokens = await mongodb.RefreshToken.find({ account: account._id });
 
             if (!account || (roles.length && !roles.includes(account.role))) {
