@@ -20,8 +20,8 @@ function authorize(roles = []) {
             // const account = await mongodb.Account.findOne({ _id: req.user.id });
             // const refreshTokens = await mongodb.RefreshToken.findOne({ account: account._id });
 
-            const account = await mongodb.Account.findById(req.user.id);
-            const refreshTokens = await mongodb.RefreshToken.find({ account: account.id });
+            var account = await mongodb.Account.findById(req.user.id);
+            var refreshTokens = await mongodb.RefreshToken.find({ account: account.id });
 
             if (!account || (roles.length && !roles.includes(account.role))) {
                 // conta não existe mais ou função não autorizada
