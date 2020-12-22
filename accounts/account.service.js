@@ -2,9 +2,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const sendEmail = require('_helpers/send-email');
-const mongodb = require('_helpers/db');
-const Role = require('_helpers/role');
+const sendEmail = require('../_helpers/send-email');
+const db = require('../_helpers/db');
+const Role = require('../_helpers/role');
 
 module.exports = {
     authenticate,
@@ -23,7 +23,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    const account = await mongodb.Account.findOne({  email  });
+    const account = await db.Account.findOne({  email  });
 
     if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
         throw 'E-mail ou senha está incorreto';
@@ -78,16 +78,16 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
     // validar
-    if (await mongodb.Account.findOne({  email: params.email })) {
+    if (await db.Account.findOne({  email: params.email })) {
         // enviar erro já registrado no e-mail para evitar enumeração de conta
         return await sendAlreadyRegisteredEmail(params.email, origin);
     }
 
     // criar objeto de conta
-    const account = new mongodb.Account(params);
+    const account = new db.Account(params);
 
     // a primeira conta registrada é um administrador
-    const isFirstAccount = (await mongodb.Account.countDocuments({})) === 0;
+    const isFirstAccount = (await db.Account.countDocuments({})) === 0;
     account.role = isFirstAccount ? Role.Admin : Role.Estudante;
     account.verificationToken = randomTokenString();
 
@@ -102,7 +102,7 @@ async function register(params, origin) {
 }
 
 async function verifyEmail({ token }) {
-    const account = await mongodb.Account.findOne({ verificationToken: token });
+    const account = await db.Account.findOne({ verificationToken: token });
 
     if (!account) throw 'Falha na verificação';
 
@@ -112,7 +112,7 @@ async function verifyEmail({ token }) {
 }
 
 async function forgotPassword({ email }, origin) {
-    const account = await mongodb.Account.findOne({ email });
+    const account = await db.Account.findOne({ email });
 
     // sempre retorna uma resposta ok para evitar a enumeração de e-mail
     if (!account) return;
@@ -129,7 +129,7 @@ async function forgotPassword({ email }, origin) {
 }
 
 async function validateResetToken({ token }) {
-    const account = await mongodb.Account.findOne({
+    const account = await db.Account.findOne({
         'resetToken.token': token,
         'resetToken.expires': { $gt: Date.now() }
     });
@@ -140,7 +140,7 @@ async function validateResetToken({ token }) {
 }
 
 async function resetPassword({ token, password }) {
-    const account = await mongodb.Account.findOne({
+    const account = await db.Account.findOne({
         'resetToken.token': token,
         'resetToken.expires': { $gt: Date.now() }
     });
@@ -155,7 +155,7 @@ async function resetPassword({ token, password }) {
 }
 
 async function getAll() {
-    const accounts = await mongodb.Account.find();
+    const accounts = await db.Account.find();
     return accounts.map(x => basicDetails(x));
 }
 
@@ -166,11 +166,11 @@ async function getById(id) {
 
 async function create(params) {
     // validar
-    if (await mongodb.Account.findOne({ email: params.email })) {
+    if (await db.Account.findOne({ email: params.email })) {
         throw 'Email "' + params.email + '" já está registrado';
     }
 
-    const account = new mongodb.Account(params);
+    const account = new db.Account(params);
     account.verified = Date.now();
 
     // senha hash
@@ -186,7 +186,7 @@ async function update(id, params) {
     const account = await getAccount(id);
 
     // validar (se o e-mail foi alterado)
-    if (params.email && account.email !== params.email && await mongodb.Account.findOne({ email: params.email })) {
+    if (params.email && account.email !== params.email && await db.Account.findOne({ email: params.email })) {
         throw 'Email "' + params.email + '" já está ocupado';
     }
 
@@ -211,14 +211,14 @@ async function _delete(id) {
 // funções auxiliares
 
 async function getAccount(id) {
-    if (!mongodb.isValidId(id)) throw 'Conta não encontrada';
-    const account = await mongodb.Account.findById(id);
+    if (!db.isValidId(id)) throw 'Conta não encontrada';
+    const account = await db.Account.findById(id);
     if (!account) throw 'Conta não encontrada';
     return account;
 }
 
 async function getRefreshToken(token) {
-    const refreshToken = await mongodb.RefreshToken.findOne({ token }).populate('account');
+    const refreshToken = await db.RefreshToken.findOne({ token }).populate('account');
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
@@ -234,7 +234,7 @@ function generateJwtToken(account) {
 
 function generateRefreshToken(account, ipAddress) {
     // cria um token de atualização que expira em 7 dias
-    return new mongodb.RefreshToken({
+    return new db.RefreshToken({
         account: account.id,
         token: randomTokenString(),
         expires: new Date(Date.now() + 7*24*60*60*1000),

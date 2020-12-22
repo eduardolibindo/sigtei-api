@@ -2,9 +2,9 @@ const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const sendEmail = require('_helpers/send-email');
-const mongodb = require('_helpers/db');
-const Role = require('_helpers/role');
+const sendEmail = require('../_helpers/send-email');
+const db = require('../_helpers/db');
+const Role = require('../_helpers/role');
 
 module.exports = {
     getstudentListAll,
@@ -15,7 +15,7 @@ module.exports = {
 };
 
 async function getstudentListAll() {
-    const studentLists = await mongodb.StudentList.find();
+    const studentLists = await db.StudentList.find();
     return studentLists.map(x => basicDetailsStudentList(x));
 }
 
@@ -26,11 +26,11 @@ async function getstudentListById(id) {
 
 async function createStudentList(params) {
     // validar
-    if (await mongodb.StudentList.findOne({ id: params.idStudent })) {
+    if (await db.StudentList.findOne({ id: params.idStudent })) {
         throw 'id "' + params.idStudent + '" já está cadastrado';
     }
 
-    const studentLists = new mongodb.StudentList(params);
+    const studentLists = new db.StudentList(params);
     studentLists.verified = Date.now();
 
     await studentLists.save();
@@ -41,7 +41,7 @@ async function updateStudentList(id, params) {
     const studentLists = await getStudentList(id);
 
     // validar (se o endereco foi alterado)
-    if (params.idStudent && studentLists.idStudent !== params.idStudent && await mongodb.StudentList.findOne({ idStudent: params.idStudent })) {
+    if (params.idStudent && studentLists.idStudent !== params.idStudent && await db.StudentList.findOne({ idStudent: params.idStudent })) {
         throw 'id "' + params.idStudent + '" já está cadastrado';
     }
 
@@ -60,8 +60,8 @@ async function _deleteStudentList(id) {
 }
 
 async function getStudentList(id) {
-    if (!mongodb.isValidId(id)) throw 'id não encontrado';
-    const studentLists = await mongodb.StudentList.findById(id);
+    if (!db.isValidId(id)) throw 'id não encontrado';
+    const studentLists = await db.StudentList.findById(id);
     if (!studentLists) throw 'id não encontrado';
     return studentLists;
 }

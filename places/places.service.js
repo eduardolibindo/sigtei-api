@@ -2,10 +2,9 @@ const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const sendEmail = require('_helpers/send-email');
-const mongodb = require('_helpers/db');
-const Role = require('_helpers/role');
-
+const sendEmail = require('../_helpers/send-email');
+const db = require('../_helpers/db');
+const Role = require('../_helpers/role');
 
 module.exports = {
     getplaceAll,
@@ -16,7 +15,7 @@ module.exports = {
 };
 
 async function getplaceAll() {
-    const places = await mongodb.Places.find();
+    const places = await db.Places.find();
     return places.map(x => basicDetailsPlace(x));
 }
 
@@ -27,11 +26,11 @@ async function getplaceById(id) {
 
 async function createPlace(params) {
     // validar
-    if (await mongodb.Places.findOne({ place: params.place })) {
+    if (await db.Places.findOne({ place: params.place })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
-    const places = new mongodb.Places(params);
+    const places = new db.Places(params);
     places.verified = Date.now();
 
     await places.save();
@@ -42,7 +41,7 @@ async function updatePlace(id, params) {
     const places = await getPlace(id);
 
     // validar (se o endereco foi alterado)
-    if (params.place && places.place !== params.place && await mongodb.Places.findOne({ place: params.place })) {
+    if (params.place && places.place !== params.place && await db.Places.findOne({ place: params.place })) {
         throw 'Local "' + params.place + '" já está cadastrado';
     }
 
@@ -61,8 +60,8 @@ async function _deletePlace(id) {
 }
 
 async function getPlace(id) {
-    if (!mongodb.isValidId(id)) throw 'Local não encontrado';
-    const places = await mongodb.Places.findById(id);
+    if (!db.isValidId(id)) throw 'Local não encontrado';
+    const places = await db.Places.findById(id);
     if (!places) throw 'local não encontrado';
     return places;
 }
