@@ -17,6 +17,7 @@ router.post('/validate-reset-token', validateResetTokenSchema, validateResetToke
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 
 router.get('/', authorize(Role.Admin), getAll);
+router.get('/current', authorize(), getCurrent);
 router.get('/:id', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
@@ -162,6 +163,11 @@ function getAll(req, res, next) {
     accountService.getAll()
         .then(accounts => res.json(accounts))
         .catch(next);
+}
+
+
+function getCurrent(req, res, next) {
+    res.json(req.user);
 }
 
 function getById(req, res, next) {
