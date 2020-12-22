@@ -10,8 +10,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+
+var corsOptions = {
+    origin: 'https://sigtei.web.app',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+
 // permitir solicitações de cors de qualquer origem e com credenciais
-app.use(cors());
+app.use(cors(corsOptions));
 
 // rotas api
 app.use('/accounts', require('./mongo/accounts/account.controller'));
