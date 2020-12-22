@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+// app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // rotas api
 app.use('/accounts', require('./mongo/accounts/account.controller'));
@@ -35,8 +35,9 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-app.get('/', (req, res) => {
+app.get('/', cors(), function (req, res, next) {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
+    res.json({msg: 'Este é habilitado para CORS para uma única rota'});
 
     // Cookies that have not been signed
     console.log('Cookies: ', req.cookies)
