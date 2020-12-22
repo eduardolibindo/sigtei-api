@@ -141,7 +141,7 @@ async function validateResetToken({ token }) {
 }
 
 async function resetPassword({ token, password }) {
-    const account = await db.Account.findOne({
+    const account = await mongodb.Account.findOne({
         'resetToken.token': token,
         'resetToken.expires': { $gt: Date.now() }
     });
@@ -167,7 +167,7 @@ async function getById(id) {
 
 async function create(params) {
     // validar
-    if (await db.Account.findOne({ email: params.email })) {
+    if (await mongodb.Account.findOne({ email: params.email })) {
         throw 'Email "' + params.email + '" já está registrado';
     }
 
