@@ -17,7 +17,9 @@ function authorize(roles = []) {
 
         // autorizar com base na função do usuário
         async (req, res, next) => {
-            const account = await mongodb.Account.findOne({ _id: req.user.id });
+            const account = await db.Account.findById(req.user.id);
+            const refreshTokens = await db.RefreshToken.find({ account: account.id });
+
             
             // const account = await mongodb.Account.findById({ _id: req.user.id });
             // const refreshTokens = await mongodb.RefreshToken.find({ account: account._id });
@@ -29,7 +31,6 @@ function authorize(roles = []) {
 
             // autenticação e autorização bem-sucedidas
             req.user.role = account.role;
-            const refreshTokens = await mongodb.RefreshToken.find({ account: account._id });
             req.user.ownsToken = token => !!refreshTokens.find(x => x.token === token);
             next();
         }

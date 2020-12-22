@@ -14,10 +14,10 @@ app.use(cookieParser());
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // rotas api
-app.use('/accounts', require('./mongo/accounts/account.controller'));
-app.use('/places', require('./mongo/places/places.controller'));
-app.use('/schedules', require('./mongo/schedules/schedules.controller'));
-app.use('/student-list', require('./mongo/student-list/student-list.controller'));
+app.use('/accounts', require('./accounts/account.controller'));
+app.use('/places', require('./places/places.controller'));
+app.use('/schedules', require('./schedules/schedules.controller'));
+app.use('/student-list', require('./student-list/student-list.controller'));
 
 // rotas docs swagger
 app.use('/api-docs', require('_helpers/swagger'));

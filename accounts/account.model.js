@@ -1,88 +1,42 @@
-// const { DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// module.exports = model;
+const schema = new Schema({
+    email: { type: String, unique: true, required: true },
+    passwordHash: { type: String, required: true },
+    title: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    rg: { type: String, required: true },
+    institution: { type: String, required: true },
+    course: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: { type: String, required: true },
+    acceptTerms: Boolean,
+    role: { type: String, required: true },
+    verificationToken: String,
+    verified: Date,
+    resetToken: {
+        token: String,
+        expires: Date
+    },
+    passwordReset: Date,
+    created: { type: Date, default: Date.now },
+    updated: Date
+});
 
-// function model(sequelize) {
-//     const attributes = {
-//         email: { type: DataTypes.STRING, allowNull: false },
-//         passwordHash: { type: DataTypes.STRING, allowNull: false },
-//         title: { type: DataTypes.STRING, allowNull: false },
-//         firstName: { type: DataTypes.STRING, allowNull: false },
-//         lastName: { type: DataTypes.STRING, allowNull: false },
-//         rg: { type: DataTypes.STRING, allowNull: false },
-//         institution: { type: DataTypes.STRING, allowNull: false },
-//         course: { type: DataTypes.STRING, allowNull: false },
-//         phone: { type: DataTypes.STRING, allowNull: false },
-//         address: { type: DataTypes.STRING, allowNull: false },
-//         acceptTerms: { type: DataTypes.BOOLEAN },
-//         role: { type: DataTypes.STRING, allowNull: false },
-//         verificationToken: { type: DataTypes.STRING },
-//         verified: { type: DataTypes.DATE },
-//         resetToken: { type: DataTypes.STRING },
-//         resetTokenExpires: { type: DataTypes.DATE },
-//         passwordReset: { type: DataTypes.DATE },
-//         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-//         updated: { type: DataTypes.DATE },
-//         isVerified: {
-//             type: DataTypes.VIRTUAL,
-//             get() { return !!(this.verified || this.passwordReset); }
-//         }
-//     };
+schema.virtual('isVerified').get(function () {
+    return !!(this.verified || this.passwordReset);
+});
 
-//     const options = {
-//         // desativa os campos de carimbo de data/hora padrão (createdAt e updatedAt)
-//         timestamps: false, 
-//         defaultScope: {
-//             // excluir hash de senha por padrão
-//             attributes: { exclude: ['passwordHash'] }
-//         },
-//         scopes: {
-//             // inclui hash com este escopo
-//             withHash: { attributes: {}, }
-//         }        
-//     };
+schema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        // remova esses adereços quando o objeto for serializado
+        delete ret._id;
+        delete ret.passwordHash;
+    }
+});
 
-//     return sequelize.define('account', attributes, options);
-// }
-
-// // const { DataTypes } = require('sequelize');
-
-// // module.exports = (sequelize) => {
-
-// //     return sequelize.define('Account', {
-// //         email: { type: DataTypes.STRING, allowNull: false },
-// //         passwordHash: { type: DataTypes.STRING, allowNull: false },
-// //         title: { type: DataTypes.STRING, allowNull: false },
-// //         firstName: { type: DataTypes.STRING, allowNull: false },
-// //         lastName: { type: DataTypes.STRING, allowNull: false },
-// //         rg: { type: DataTypes.STRING, allowNull: false },
-// //         institution: { type: DataTypes.STRING, allowNull: false },
-// //         course: { type: DataTypes.STRING, allowNull: false },
-// //         phone: { type: DataTypes.STRING, allowNull: false },
-// //         address: { type: DataTypes.STRING, allowNull: false },
-// //         acceptTerms: { type: DataTypes.BOOLEAN },
-// //         role: { type: DataTypes.STRING, allowNull: false },
-// //         verificationToken: { type: DataTypes.STRING },
-// //         verified: { type: DataTypes.DATE },
-// //         resetToken: { type: DataTypes.STRING },
-// //         resetTokenExpires: { type: DataTypes.DATE },
-// //         passwordReset: { type: DataTypes.DATE },
-// //         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-// //         updated: { type: DataTypes.DATE },
-// //         isVerified: { type: DataTypes.VIRTUAL, get() { return !!(this.verified || this.passwordReset); } }
-// //     }, {
-// //         // desativa os campos de carimbo de data/hora padrão (createdAt e updatedAt)
-// //         timestamps: false,
-// //         defaultScope: {
-// //             // excluir hash de senha por padrão
-// //             attributes: { exclude: ['passwordHash'] }
-// //             // include: [{ model: Account, attributes: { exclude: ['passwordHash'] } }]
-// //         },
-// //         scopes: {
-// //             // inclui hash com este escopo
-// //             withHash: { attributes: {}, }
-// //             // include: [{ model: Account, include: withHash }]
-// //         }
-// //     });
-
-// // }
+module.exports = mongoose.model('Account', schema);

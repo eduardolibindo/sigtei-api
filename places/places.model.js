@@ -1,52 +1,22 @@
-// const { DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// module.exports = model;
+const schema = new Schema({
+    account: { type: Schema.Types.ObjectId, ref: 'Account' },
+    type: { type: String, required: true },
+    title: { type: String, required: true },
+    place: { type: String, required: true },
+    street: { type: String, required: true },
+    district: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    verified: Date,
+    created: { type: Date, default: Date.now },
+    updated: Date
+});
 
-// function model(sequelize) {
-//     const attributes = {
-//         type: { type: DataTypes.STRING, allowNull: false},
-//         title: { type: DataTypes.STRING, allowNull: false},
-//         place: { type: DataTypes.STRING, allowNull: false},
-//         street: { type: DataTypes.STRING, allowNull: false},
-//         district: { type: DataTypes.STRING, allowNull: false},
-//         city: { type: DataTypes.STRING, allowNull: false},
-//         state: { type: DataTypes.STRING, allowNull: false},
-//         verified: { type: DataTypes.DATE },
-//         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-//         updated: { type: DataTypes.DATE },
-//         isVerified: {
-//             type: DataTypes.VIRTUAL,
-//             get() { return !!(this.verified); }
-//         }
+schema.virtual('isVerified').get(function () {
+    return !!(this.verified);
+});
 
-//     };
-
-//     const options = {
-//         // desativa os campos de carimbo de data/hora padrão (createdAt e updatedAt)
-//         timestamps: false
-//     };
-
-//     return sequelize.define('places', attributes, options);
-// }
-
-// // const { DataTypes } = require('sequelize');
-
-// // module.exports = (sequelize) => {
-
-// //     return sequelize.define('Places', {
-// //         title: { type: DataTypes.STRING, allowNull: false },
-// //         place: { type: DataTypes.STRING, allowNull: false },
-// //         street: { type: DataTypes.STRING, allowNull: false },
-// //         district: { type: DataTypes.STRING, allowNull: false },
-// //         city: { type: DataTypes.STRING, allowNull: false },
-// //         state: { type: DataTypes.STRING, allowNull: false },
-// //         verified: { type: DataTypes.DATE },
-// //         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-// //         updated: { type: DataTypes.DATE },
-// //         isVerified: { type: DataTypes.VIRTUAL, get() { return !!(this.verified); } }
-// //     }, {
-// //         // desativa os campos de carimbo de data/hora padrão (createdAt e updatedAt)
-// //         timestamps: false
-// //     });
-
-// // }
+module.exports = mongoose.model('Places', schema);

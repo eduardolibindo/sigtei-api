@@ -1,51 +1,34 @@
-// const { DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// module.exports = model;
+const schema = new Schema({
+    account: { type: Schema.Types.ObjectId, ref: 'Account' },
+    token: String,
+    expires: Date,
+    created: { type: Date, default: Date.now },
+    createdByIp: String,
+    revoked: Date,
+    revokedByIp: String,
+    replacedByToken: String
+});
 
-// function model(sequelize) {
-//     const attributes = {
-//         token: { type: DataTypes.STRING },
-//         expires: { type: DataTypes.DATE },
-//         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-//         createdByIp: { type: DataTypes.STRING },
-//         revoked: { type: DataTypes.DATE },
-//         revokedByIp: { type: DataTypes.STRING },
-//         replacedByToken: { type: DataTypes.STRING },
-//         isExpired: {
-//             type: DataTypes.VIRTUAL,
-//             get() { return Date.now() >= this.expires; }
-//         },
-//         isActive: {
-//             type: DataTypes.VIRTUAL,
-//             get() { return !this.revoked && !this.isExpired; }
-//         }
-//     };
+schema.virtual('isExpired').get(function () {
+    return Date.now() >= this.expires;
+});
 
-//     const options = {
-//         // desativa os campos de carimbo de data/hora padrão (createdAt e updatedAt)
-//         timestamps: false
-//     };
+schema.virtual('isActive').get(function () {
+    return !this.revoked && !this.isExpired;
+});
 
-//     return sequelize.define('refreshToken', attributes, options);
-// }
+schema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        // remova esses adereços quando o objeto for serializado
+        delete ret._id;
+        delete ret.id;
+        delete ret.account;
+    }
+});
 
-// // const { DataTypes } = require('sequelize');
-
-// // module.exports = (sequelize) => {
-
-// //     return sequelize.define('RefreshToken', {
-// //         token: { type: DataTypes.STRING },
-// //         expires: { type: DataTypes.DATE },
-// //         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-// //         createdByIp: { type: DataTypes.STRING },
-// //         revoked: { type: DataTypes.DATE },
-// //         revokedByIp: { type: DataTypes.STRING },
-// //         replacedByToken: { type: DataTypes.STRING },
-// //         isExpired: { type: DataTypes.VIRTUAL, get() { return Date.now() >= this.expires; } },
-// //         isActive: { type: DataTypes.VIRTUAL, get() { return !this.revoked && !this.isExpired; } }
-// //     }, {
-// //         // desativa os campos de carimbo de data/hora padrão (createdAt e updatedAt)
-// //         timestamps: false
-// //     });
-
-// // }
+module.exports = mongoose.model('RefreshToken', schema);

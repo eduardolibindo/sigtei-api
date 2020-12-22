@@ -5,11 +5,11 @@ mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionO
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    Schedules: require('../mongo/schedules/schedules.model'),
-    Account: require('../mongo/accounts/account.model'),
-    RefreshToken: require('../mongo/accounts/refresh-token.model'),
-    Places: require('../mongo/places/places.model'),
-    StudentList: require('../mongo/student-list/student-list.model'),
+    Account: require('accounts/account.model'),
+    RefreshToken: require('accounts/refresh-token.model'),
+    Places: require('places/places.model'),
+    Schedules: require('schedules/schedules.model'),
+    StudentList: require('student-list/student-list.model'),
     isValidId
 };
 
