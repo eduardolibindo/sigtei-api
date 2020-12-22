@@ -227,8 +227,8 @@ async function getAccount(id) {
     return account;
 }
 
-async function getRefreshToken(token) {
-    const refreshToken = await mongodb.RefreshToken.findOne({ token }).populate('account');
+async function getRefreshToken(tokem) {
+    const refreshToken = await mongodb.RefreshToken.findOne({ token: tokem }).populate('account');
     if (!refreshToken || !refreshToken.isActive) throw 'Token inválido';
     return refreshToken;
 }
