@@ -10,8 +10,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
+app.get('/', (req, res) => {
+    request(
+        { url: 'https://sigtei-api.herokuapp.com' },
+        (error, response, body) => {
+            if (error || response.statusCode !== 200) {
+                return res.status(500).json({ type: 'error', message: err.message });
+            }
+
+            res.json(JSON.parse(body));
+        }
+    )
+});
+
 // permitir solicitações de cors de qualquer origem e com credenciais
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+// app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // rotas api
 app.use('/accounts', require('./mongo/accounts/account.controller'));
@@ -35,15 +54,7 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-app.get('/', (req, res) => {
-    res.send('Bem-vindo na api-sigtei no Heroku !!');
 
-    // Cookies that have not been signed
-    console.log('Cookies: ', req.cookies)
-
-    // Cookies that have been signed
-    console.log('Signed Cookies: ', req.signedCookies)
-})
 
 
 // iniciar o servidor
