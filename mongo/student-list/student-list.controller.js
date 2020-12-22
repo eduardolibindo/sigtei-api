@@ -9,7 +9,7 @@ const studentListService = require('./student-list.service');
 //rotas
 router.get('/', authorize(Role.Admin), getstudentListAll);
 router.get('/:id', authorize(), getstudentListById);
-router.post('/', authorize(Role.Admin), createStudentListSchema, getcreateStudentList);
+router.post('/', authorize(Role.Admin), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
 router.delete('/:id', authorize(), _deleteStudentList);
 
@@ -46,8 +46,8 @@ function createStudentListSchema(req, res, next) {
     validateRequest(req, next, schema);
 }
 
-function getcreateStudentList(req, res, next) {
-    studentListService.getcreateStudentList(req.body)
+function createStudentList(req, res, next) {
+    studentListService.createStudentList(req.body)
         .then(studentLists => res.json(studentLists))
         .catch(next);
 }
