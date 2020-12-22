@@ -29,7 +29,7 @@ function authorize(roles = []) {
                 } 
             }); 
 
-            const refreshTokens = await mongodb.RefreshToken.findOne({ account: account._id });
+            const refreshTokens = await mongodb.RefreshToken.find({ account: account.id });
 
             if (!account || (roles.length && !roles.includes(account.role))) {
                 // conta não existe mais ou função não autorizada
