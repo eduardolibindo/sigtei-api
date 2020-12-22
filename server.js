@@ -10,15 +10,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-
-var corsOptions = {
-    origin: 'https://sigtei.web.app',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
-
 // permitir solicitações de cors de qualquer origem e com credenciais
-app.use(cors(corsOptions));
-
+var corsOptions = {
+    origin: function (origin, callback) {
+      // db.loadOrigins is an example call to load
+      // a list of origins from a backing database
+      db.loadOrigins(function (error, origins) {
+        callback(error, origins)
+      })
+    }
+  }
 // rotas api
 app.use('/accounts', require('./mongo/accounts/account.controller'));
 app.use('/places', require('./mongo/places/places.controller'));
@@ -41,7 +42,7 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-app.get('/', (req, res) => {
+app.get('/', cors(corsOptions), function (req, res, next) {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
 
     // Cookies that have not been signed
