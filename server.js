@@ -11,15 +11,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
-var corsOptions = {
-    origin: function (origin, callback) {
-      // db.loadOrigins is an example call to load
-      // a list of origins from a backing database
-      db.loadOrigins(function (error, origins) {
-        callback(error, origins)
-      })
-    }
-  }
+app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+
 // rotas api
 app.use('/accounts', require('./mongo/accounts/account.controller'));
 app.use('/places', require('./mongo/places/places.controller'));
@@ -42,7 +35,7 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-app.get('/', cors(corsOptions), function (req, res, next) {
+app.get('/', (req, res) => {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
 
     // Cookies that have not been signed
