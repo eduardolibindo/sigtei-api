@@ -23,10 +23,10 @@ function authorize(roles = []) {
              const account = await mongodb.Account.findById({object:'5fe169c1214b730004390e95'});
              const refreshTokens = await mongodb.RefreshToken.find({ account: account._id });
 
-            if (!account || (roles.length && !roles.includes(account.role))) {
-                // conta não existe mais ou função não autorizada
-                return res.status(401).json({ message: 'Não autorizado' });
-            }
+            // if (!account || (roles.length && !roles.includes(account.role))) {
+            //     // conta não existe mais ou função não autorizada
+            //     return res.status(401).json({ message: 'Não autorizado' });
+            // }
 
             // autenticação e autorização bem-sucedidas
             req.user.role = account.role;
