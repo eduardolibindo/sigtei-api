@@ -17,16 +17,16 @@ function authorize(roles = []) {
 
         // autorizar com base na função do usuário
         async (req, res, next) => {
-            //const account = await mongodb.Account.findOne({ _id: req.user.id });
-            //const refreshTokens = await mongodb.RefreshToken.findOne({ account: account._id });
+            // const account = await mongodb.Account.findOne({ _id: req.user.id });
+            // const refreshTokens = await mongodb.RefreshToken.findOne({ account: account._id });
 
-             const account = await mongodb.Account.findById({object:'5fe169c1214b730004390e95'});
-             const refreshTokens = await mongodb.RefreshToken.find({ account: account._id });
+            const account = await mongodb.Account.findById(req.user.id);
+            const refreshTokens = await mongodb.RefreshToken.find({ account: account.id });
 
-            // if (!account || (roles.length && !roles.includes(account.role))) {
-            //     // conta não existe mais ou função não autorizada
-            //     return res.status(401).json({ message: 'Não autorizado' });
-            // }
+            if (!account || (roles.length && !roles.includes(account.role))) {
+                // conta não existe mais ou função não autorizada
+                return res.status(401).json({ message: 'Não autorizado' });
+            }
 
             // autenticação e autorização bem-sucedidas
             req.user.role = account.role;
