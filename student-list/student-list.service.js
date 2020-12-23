@@ -27,7 +27,7 @@ async function getstudentListById(id) {
 async function createStudentList(params) {
     // validar
     if (await db.StudentList.findOne({ id: params.idStudent })) {
-        throw 'id "' + params.idStudent + '" já está cadastrado';
+        throw 'Estudante já está cadastrado';
     }
 
     const studentLists = new db.StudentList(params);
