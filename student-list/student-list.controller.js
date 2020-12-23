@@ -86,9 +86,9 @@ function updateStudentList(req, res, next) {
 
 function _deleteStudentList(req, res, next) {
     // os usuários podem excluir suas próprias contas e os administradores podem excluir qualquer conta
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Não autorizado' });
-    }
+    // if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    //     return res.status(401).json({ message: 'Não autorizado' });
+    // }
 
     studentListService.deleteStudentList(req.params.id)
         .then(() => res.json({ message: 'id excluído com sucesso' }))
