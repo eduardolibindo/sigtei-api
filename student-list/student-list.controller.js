@@ -7,11 +7,11 @@ const Role = require('../_helpers/role');
 const studentListService = require('./student-list.service');
 
 //rotas
-router.get('/', authorize(), getstudentListAll);
+router.get('/', authorize([Role.Admin, Role.Motorista]), getstudentListAll);
 router.get('/:id', authorize(), getstudentListById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
-router.delete('/:id', authorize(), _deleteStudentList);
+router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
 
 module.exports = router;
 
