@@ -9,7 +9,7 @@ const studentListService = require('./student-list.service');
 //rotas
 router.get('/', authorize(), getstudentListAll);
 router.get('/:id', authorize(), getstudentListById);
-router.post('/', authorize(Role.Admin), createStudentListSchema, createStudentList);
+router.post('/', authorize(Role.Admin,Role.Motorista), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
 router.delete('/:id', authorize(), _deleteStudentList);
 
@@ -23,7 +23,7 @@ function getstudentListAll(req, res, next) {
 
 function getstudentListById(req, res, next) {
     // os usuários podem obter seus próprios enderecos e os administradores podem obter qualquer endereco
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin && req.user.role !== Role.Motorista) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -75,7 +75,7 @@ function updateStudentListSchema(req, res, next) {
 
 function updateStudentList(req, res, next) {
     // os usuários podem atualizar suas próprias contas e os administradores podem atualizar qualquer conta
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin && req.user.role !== Role.Motorista) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
@@ -86,7 +86,7 @@ function updateStudentList(req, res, next) {
 
 function _deleteStudentList(req, res, next) {
     // os usuários podem excluir suas próprias contas e os administradores podem excluir qualquer conta
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.user.id && req.user.role !== Role.Admin && req.user.role !== Role.Motorista) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
