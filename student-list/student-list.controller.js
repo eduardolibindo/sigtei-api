@@ -92,7 +92,7 @@ function _deleteStudentList(req, res, next) {
     //     return res.status(401).json({ message: 'Não autorizado' });
     // }
 
-    studentListService.deleteStudentList(req.params.id)
+    studentListService.deleteStudentList(req.params.idStudent)
         .then(() => res.json({ message: 'id excluído com sucesso' }))
         .catch(next);
 }
