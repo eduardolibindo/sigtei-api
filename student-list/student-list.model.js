@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    id: { type: String, required: true },
+    idStudent: { type: String, required: true },
     title: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },

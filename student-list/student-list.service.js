@@ -19,14 +19,14 @@ async function getstudentListAll() {
     return studentLists.map(x => basicDetailsStudentList(x));
 }
 
-async function getstudentListById(id) {
-    const studentLists = await getStudentList(id);
+async function getstudentListById(idStudent) {
+    const studentLists = await getStudentList(idStudent);
     return basicDetailsStudentList(studentLists);
 }
 
 async function createStudentList(params) {
     // validar
-    if (await db.StudentList.findOne({ id: params.idStudent })) {
+    if (await db.StudentList.findOne({ idStudent: params.idStudent })) {
         throw 'Estudante já está cadastrado';
     }
 
@@ -37,8 +37,8 @@ async function createStudentList(params) {
     return basicDetailsStudentList(studentLists);
 }
 
-async function updateStudentList(id, params) {
-    const studentLists = await getStudentList(id);
+async function updateStudentList(idStudent, params) {
+    const studentLists = await getStudentList(idStudent);
 
     // validar (se o endereco foi alterado)
     if (params.idStudent && studentLists.idStudent !== params.idStudent && await db.StudentList.findOne({ idStudent: params.idStudent })) {
@@ -54,19 +54,19 @@ async function updateStudentList(id, params) {
 
 }
 
-async function _deleteStudentList(id) {
-    const studentLists = await getStudentList(id);
+async function _deleteStudentList(idStudent) {
+    const studentLists = await getStudentList(idStudent);
     await studentLists.remove();
 }
 
-async function getStudentList(id) {
-    if (!db.isValidId(id)) throw 'id não encontrado';
-    const studentLists = await db.StudentList.findById(id);
+async function getStudentList(idStudent) {
+    if (!db.isValidId(idStudent)) throw 'id não encontrado';
+    const studentLists = await db.StudentList.findById(idStudent);
     if (!studentLists) throw 'id não encontrado';
     return studentLists;
 }
 
 function basicDetailsStudentList(studentLists) {
-    const { id, title, firstName, lastName, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
-    return { id, title, firstName, lastName,rg, institution, course, phone, address, created, updated, isVerified };
+    const { id, idStudent, title, firstName, lastName, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
+    return { id, idStudent, title, firstName, lastName,rg, institution, course, phone, address, created, updated, isVerified };
 }

@@ -8,10 +8,10 @@ const studentListService = require('./student-list.service');
 
 //rotas
 router.get('/', authorize([Role.Admin, Role.Motorista]), getstudentListAll);
-router.get('/:id', authorize(), getstudentListById);
+router.get('/:idStudent', authorize(), getstudentListById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createStudentListSchema, createStudentList);
-router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
-router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
+router.put('/:idStudent', authorize(), updateStudentListSchema, updateStudentList);
+router.delete('/:idStudent', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
 
 module.exports = router;
 
@@ -34,6 +34,7 @@ function getstudentListById(req, res, next) {
 
 function createStudentListSchema(req, res, next) {
     const schema = Joi.object({
+        idStudent: Joi.string().required(),
         title: Joi.string().required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
@@ -54,6 +55,7 @@ function createStudentList(req, res, next) {
 
 function updateStudentListSchema(req, res, next) {
     const schemaRules = {
+        idStudent: Joi.string().empty(''),
         title: Joi.string().empty(''),
         firstName: Joi.string().empty(''),
         lastName: Joi.string().empty(''),
