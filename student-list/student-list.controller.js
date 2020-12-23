@@ -9,7 +9,7 @@ const studentListService = require('./student-list.service');
 //rotas
 router.get('/', authorize(), getstudentListAll);
 router.get('/:id', authorize(), getstudentListById);
-router.post('/', authorize(Role.Admin,Role.Motorista), createStudentListSchema, createStudentList);
+router.post('/', authorize(Role.Motorista), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
 router.delete('/:id', authorize(), _deleteStudentList);
 
