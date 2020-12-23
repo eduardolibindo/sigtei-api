@@ -7,7 +7,7 @@ const Role = require('../_helpers/role');
 const studentListService = require('./student-list.service');
 
 //rotas
-router.get('/', authorize(Role.Admin), getstudentListAll);
+router.get('/', authorize(), getstudentListAll);
 router.get('/:id', authorize(), getstudentListById);
 router.post('/', authorize(Role.Admin), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);

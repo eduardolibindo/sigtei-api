@@ -7,7 +7,7 @@ const Role = require('../_helpers/role');
 const schedulesService = require('./schedules.service');
 
 // rotas
-router.get('/', authorize(Role.Admin), getscheduleAll);
+router.get('/', authorize(), getscheduleAll);
 router.get('/:id', authorize(), getscheduleById);
 router.post('/', authorize(Role.Admin), createscheduleSchema, createSchedule);
 router.put('/:id', authorize(), updatescheduleSchema, updateSchedule);

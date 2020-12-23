@@ -7,7 +7,7 @@ const Role = require('../_helpers/role');
 const placesService = require('./places.service');
 
 //rotas
-router.get('/', authorize(Role.Admin), getplaceAll);
+router.get('/', authorize(), getplaceAll);
 router.get('/:id', authorize(), getplaceById);
 router.post('/', authorize(Role.Admin), createplaceSchema, createPlace);
 router.put('/:id', authorize(), updateplaceSchema, updatePlace);
