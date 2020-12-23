@@ -19,8 +19,8 @@ async function getstudentListAll() {
     return studentLists.map(x => basicDetailsStudentList(x));
 }
 
-async function getstudentListById(idStudent) {
-    const studentLists = await getStudentList(idStudent);
+async function getstudentListById(id) {
+    const studentLists = await getStudentList(id);
     return basicDetailsStudentList(studentLists);
 }
 
@@ -54,14 +54,14 @@ async function updateStudentList(idStudent, params) {
 
 }
 
-async function _deleteStudentList(idStudent) {
-    const studentLists = await getStudentList(idStudent);
+async function _deleteStudentList(id) {
+    const studentLists = await getStudentList(id);
     await studentLists.remove();
 }
 
-async function getStudentList(idStudent) {
-    // if (!db.isValidId(idStudent)) throw 'id não encontrado';
-    const studentLists = await db.StudentList.findById(idStudent);
+async function getStudentList(id) {
+    if (!db.isValidId(id)) throw 'id não encontrado';
+    const studentLists = await db.StudentList.findById(id);
     if (!studentLists) throw 'id não encontrado';
     return studentLists;
 }
