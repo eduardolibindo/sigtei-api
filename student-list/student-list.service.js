@@ -26,7 +26,7 @@ async function getstudentListById(id) {
 
 async function createStudentList(params) {
     // validar
-    if (await db.StudentList.findOne({ idStudent: params.idStudent })) {
+    if (await db.StudentList.findOne({ id: params.idStudent })) {
         throw 'Estudante já está cadastrado';
     }
 
@@ -37,8 +37,8 @@ async function createStudentList(params) {
     return basicDetailsStudentList(studentLists);
 }
 
-async function updateStudentList(idStudent, params) {
-    const studentLists = await getStudentList(idStudent);
+async function updateStudentList(id, params) {
+    const studentLists = await getStudentList(id);
 
     // validar (se o endereco foi alterado)
     if (params.idStudent && studentLists.idStudent !== params.idStudent && await db.StudentList.findOne({ idStudent: params.idStudent })) {
@@ -67,6 +67,6 @@ async function getStudentList(id) {
 }
 
 function basicDetailsStudentList(studentLists) {
-    const { idStudent, title, firstName, lastName, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
-    return { idStudent, title, firstName, lastName,rg, institution, course, phone, address, created, updated, isVerified };
+    const { id, idStudent, title, firstName, lastName, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
+    return { id, idStudent, title, firstName, lastName,rg, institution, course, phone, address, created, updated, isVerified };
 }

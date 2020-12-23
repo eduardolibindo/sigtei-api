@@ -8,10 +8,10 @@ const studentListService = require('./student-list.service');
 
 //rotas
 router.get('/', authorize([Role.Admin, Role.Motorista]), getstudentListAll);
-router.get('/:idStudent', authorize(), getstudentListById);
+router.get('/:id', authorize(), getstudentListById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createStudentListSchema, createStudentList);
-router.put('/:idStudent', authorize(), updateStudentListSchema, updateStudentList);
-router.delete('/:idStudent', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
+router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
+router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
 
 module.exports = router;
 
@@ -92,7 +92,7 @@ function _deleteStudentList(req, res, next) {
     //     return res.status(401).json({ message: 'Não autorizado' });
     // }
 
-    studentListService.deleteStudentList(req.params.idStudent)
+    studentListService.deleteStudentList(req.params.id)
         .then(() => res.json({ message: 'id excluído com sucesso' }))
         .catch(next);
 }
