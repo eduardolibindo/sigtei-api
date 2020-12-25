@@ -48,10 +48,11 @@ app.get('/', (req, res) => {
 })
 
 const pusher = new Pusher({
-    appId: process.env.PUSHER_APP_ID="1128798",
-    key: process.env.PUSHER_KEY="a9dff7ecba6e6bf75832",
-    secret: process.env.PUSHER_SECRET="a8d967945f7270824972",
-    cluster: 'us2',
+    appId: "1128798",
+    key: "a9dff7ecba6e6bf75832",
+    secret: "a8d967945f7270824972",
+    cluster: "us2",
+    useTLS: true
   });
 
 app.post('/ping', (req, res) => {
