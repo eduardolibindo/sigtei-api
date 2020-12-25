@@ -1,7 +1,9 @@
 ﻿﻿require('rootpath')();
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const Pusher = require("pusher");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
@@ -45,7 +47,25 @@ app.get('/', (req, res) => {
     console.log('Signed Cookies: ', req.signedCookies)
 })
 
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID="1128798",
+    key: process.env.PUSHER_KEY="a9dff7ecba6e6bf75832",
+    secret: process.env.PUSHER_SECRET="a8d967945f7270824972",
+    cluster: 'us2',
+  });
+
+app.post('/ping', (req, res) => {
+    const { lat, lng } = req.body;
+    const data = {
+        lat,
+        lng,
+    };
+    pusher.trigger('location', 'ping', data);
+    res.json(data);
+});
+
 
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
 app.listen(port, () => console.log('Servidor ouvindo na porta ' + port));
+
