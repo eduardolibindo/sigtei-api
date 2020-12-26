@@ -8,6 +8,7 @@ const Role = require('../_helpers/role');
 
 module.exports = {
     getstudentListAll,
+    getaddressAll,
     getstudentListById,
     createStudentList,
     updateStudentList,
@@ -17,6 +18,11 @@ module.exports = {
 async function getstudentListAll() {
     const studentLists = await db.StudentList.find();
     return studentLists.map(x => basicDetailsStudentList(x));
+}
+
+async function getaddressAll() {
+    const studentLists = await db.StudentList.find({address});
+    return studentLists.map(x => basicDetailsStudentList(x));    
 }
 
 async function getstudentListById(id) {
