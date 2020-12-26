@@ -21,8 +21,8 @@ async function getstudentListAll() {
 }
 
 async function getaddressAll() {
-    const studentLists = await db.StudentList.find({address});
-    return studentLists.map(studentLists => studentLists.address).sort();
+    const studentLists = await db.StudentList.find();
+    return studentLists.map(x => basicaddressStudentList(x));
 }
 
 async function getstudentListById(id) {
@@ -75,4 +75,10 @@ async function getStudentList(id) {
 function basicDetailsStudentList(studentLists) {
     const { id, idStudent, title, firstName, lastName, rg, institution, course, phone, address, created, updated, isVerified } = studentLists;
     return { id, idStudent, title, firstName, lastName,rg, institution, course, phone, address, created, updated, isVerified };
+}
+
+
+function basicaddressStudentList(studentLists) {
+    const { address } = studentLists;
+    return { address };
 }
