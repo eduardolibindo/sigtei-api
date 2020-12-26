@@ -21,8 +21,8 @@ async function getstudentListAll() {
 }
 
 async function getaddressAll() {
-    const studentLists = await db.StudentList.find(address);
-    return basicDetailsStudentList(studentLists);   
+    const studentLists = await db.StudentList.find({address});
+    return studentLists;
 }
 
 async function getstudentListById(id) {
