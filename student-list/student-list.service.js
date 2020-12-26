@@ -22,7 +22,7 @@ async function getstudentListAll() {
 
 async function getaddressAll() {
     const studentLists = await db.StudentList.find();
-    return studentLists.map(x => basicDetailsStudentList(address));
+    return studentLists.map(basicDetailsStudentList(address));
 }
 
 async function getstudentListById(id) {
