@@ -21,8 +21,8 @@ async function getstudentListAll() {
 }
 
 async function getaddressAll() {
-    const studentLists = await db.StudentList.find();
-    return studentLists.map(studentLists => studentLists.address);
+    const studentLists = await db.StudentList.find({address});
+    return studentLists.map(studentLists => studentLists.address).sort();
 }
 
 async function getstudentListById(id) {
