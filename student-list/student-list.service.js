@@ -67,9 +67,11 @@ async function _deleteStudentList(id) {
 }
 
 async function _deleteListAll() {
-    const studentLists = await db.StudentList.find();
+    const studentLists = await db.StudentList.find({id});
     return studentLists.remove();
 }
+
+
 
 async function getStudentList(id) {
     if (!db.isValidId(id)) throw 'id não encontrado';
