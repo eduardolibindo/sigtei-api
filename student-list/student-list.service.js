@@ -12,7 +12,8 @@ module.exports = {
     getstudentListById,
     createStudentList,
     updateStudentList,
-    deleteStudentList: _deleteStudentList
+    deleteStudentList: _deleteStudentList,
+    deleteListAll: _deleteListAll
 };
 
 async function getstudentListAll() {
@@ -63,6 +64,11 @@ async function updateStudentList(id, params) {
 async function _deleteStudentList(id) {
     const studentLists = await getStudentList(id);
     await studentLists.remove();
+}
+
+async function _deleteListAll() {
+    const studentLists = await db.StudentList.find();
+    return studentLists.remove();
 }
 
 async function getStudentList(id) {

@@ -13,6 +13,7 @@ router.get('/:id', authorize(), getstudentListById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
 router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
+router.delete('/delete', authorize([Role.Admin, Role.Motorista]), _deleteListAll);
 
 module.exports = router;
 
@@ -101,5 +102,11 @@ function _deleteStudentList(req, res, next) {
 
     studentListService.deleteStudentList(req.params.id)
         .then(() => res.json({ message: 'id excluído com sucesso' }))
+        .catch(next);
+}
+
+function _deleteListAll(req, res, next) {
+    studentListService.deleteListAll()
+        .then(() => res.json({ message: 'Lista excluída com sucesso' }))
         .catch(next);
 }
