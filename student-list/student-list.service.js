@@ -67,7 +67,7 @@ async function _deleteStudentList(id) {
 }
 
 async function _deleteListAll() {
-    const studentLists = await db.StudentList.remove({ });
+    const studentLists = await db.StudentList.deleteMany({});
     return studentLists;
 }
 
