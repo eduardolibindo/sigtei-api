@@ -21,4 +21,10 @@ schema.virtual('isVerified').get(function () {
     return !!(this.verified);
 });
 
+schema.method("toJSON", function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
+
 module.exports = mongoose.model('StudentList', schema);

@@ -13,7 +13,7 @@ router.get('/:id', authorize(), getstudentListById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
 router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteStudentList);
-router.delete('/delete', authorize([Role.Admin, Role.Motorista]), _deleteListAll);
+router.delete('/', authorize([Role.Admin, Role.Motorista]), _deleteListAll);
 
 module.exports = router;
 
