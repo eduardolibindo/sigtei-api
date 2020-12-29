@@ -1,6 +1,8 @@
 ﻿﻿require('rootpath')();
 const express = require('express');
 const app = express();
+const Http = require('http').createServer(app);
+const Socketio = require('socket.io')(Http);
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -45,6 +47,17 @@ app.get('/', (req, res) => {
     console.log('Signed Cookies: ', req.signedCookies)
 })
 
+const markers = [];
+
+Socketio.on('connection', socket => {
+    for(let i = 0; i < markers.length; i++){
+        socket.emit('marker', markers[i]);
+    }
+    socket.on('marker', data => {
+        markers.push(data);
+        Socketio.emit('marker', data);
+    });
+});
 
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;

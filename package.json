@@ -25,6 +25,7 @@
         "pusher-js": "^7.0.2",
         "rootpath": "^0.1.2",
         "sequelize": "^6.3.4",
+        "socket.io": "^3.0.4",
         "swagger-ui-express": "^4.1.4",
         "yamljs": "^0.3.0"
     },
