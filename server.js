@@ -13,15 +13,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
-// app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    next();
-});
+app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header(
+//       'Access-Control-Allow-Headers',
+//       'Origin, X-Requested-With, Content-Type, Accept'
+//     );
+//     next();
+// });
 
 // rotas api
 app.use('/accounts', require('./accounts/account.controller'));
@@ -52,7 +52,6 @@ const pusher = new Pusher({
     cluster: process.env.PUSHER_APP_CLUSTER,
 });
 
-
 app.post('/ping', (req, res) => {
     const { lat, lng } = req.body;
     const data = {
@@ -63,7 +62,6 @@ app.post('/ping', (req, res) => {
     pusher.trigger('location', 'ping', data);
     res.json(data);
 });
-
 
 app.get('/', (req, res) => {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
