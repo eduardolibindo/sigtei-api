@@ -1,8 +1,8 @@
 ﻿﻿require('rootpath')();
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const Http = require('http').createServer(app);
-const Socketio = require('socket.io')(Http);
+const Pusher = require('pusher');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -13,7 +13,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // permitir solicitações de cors de qualquer origem e com credenciais
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+// app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
+});
 
 // rotas api
 app.use('/accounts', require('./accounts/account.controller'));
@@ -37,6 +45,26 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_APP_KEY,
+    secret: process.env.PUSHER_APP_SECRET,
+    cluster: process.env.PUSHER_APP_CLUSTER,
+});
+
+
+app.post('/ping', (req, res) => {
+    const { lat, lng } = req.body;
+    const data = {
+      lat,
+      lng,
+    };
+  
+    pusher.trigger('location', 'ping', data);
+    res.json(data);
+});
+
+
 app.get('/', (req, res) => {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
 
@@ -45,19 +73,8 @@ app.get('/', (req, res) => {
 
     // Cookies that have been signed
     console.log('Signed Cookies: ', req.signedCookies)
-})
-
-const markers = [];
-
-Socketio.on('connection', socket => {
-    for(let i = 0; i < markers.length; i++){
-        socket.emit('marker', markers[i]);
-    }
-    socket.on('marker', data => {
-        markers.push(data);
-        Socketio.emit('marker', data);
-    });
 });
+
 
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
