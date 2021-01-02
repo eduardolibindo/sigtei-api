@@ -11,7 +11,7 @@ const schema = new Schema({
     institution: { type: String, required: true },
     course: { type: String, required: true },
     phone: { type: String, required: true },
-    address: { type: String, required: true },
+    location: { type: String, required: true },
     acceptTerms: Boolean,
     role: { type: String, required: true },
     verificationToken: String,
