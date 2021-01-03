@@ -9,6 +9,7 @@ const studentListService = require('./student-list.service');
 //rotas
 router.get('/', authorize([Role.Admin, Role.Motorista]), getstudentListAll);
 router.get('/address', authorize([Role.Admin, Role.Motorista]), getaddressAll);
+router.get('/label', authorize([Role.Admin, Role.Motorista]), getlabelAll);
 router.get('/:id', authorize(), getstudentListById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createStudentListSchema, createStudentList);
 router.put('/:id', authorize(), updateStudentListSchema, updateStudentList);
@@ -25,6 +26,12 @@ function getstudentListAll(req, res, next) {
 
 function getaddressAll(req, res, next) {
     studentListService.getaddressAll()
+    .then(studentLists => res.json(studentLists))
+    .catch(next);
+}
+
+function getlabelAll(req, res, next) {
+    studentListService.getlabelAll()
     .then(studentLists => res.json(studentLists))
     .catch(next);
 }

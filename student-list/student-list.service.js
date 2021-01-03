@@ -9,6 +9,7 @@ const Role = require('../_helpers/role');
 module.exports = {
     getstudentListAll,
     getaddressAll,
+    getlabelAll,
     getstudentListById,
     createStudentList,
     updateStudentList,
@@ -24,6 +25,11 @@ async function getstudentListAll() {
 async function getaddressAll() {
     const studentLists = await db.StudentList.find();
     return studentLists.map(x => basicaddressStudentList(x));
+}
+
+async function getlabelAll() {
+    const studentLists = await db.StudentList.find();
+    return studentLists.map(x => basiclabelStudentList(x));
 }
 
 async function getstudentListById(id) {
@@ -85,6 +91,11 @@ function basicDetailsStudentList(studentLists) {
 
 
 function basicaddressStudentList(studentLists) {
-    const { location, label } = studentLists;
-    return { location, label };
+    const { location } = studentLists;
+    return { location };
+}
+
+function basiclabelStudentList(studentLists) {
+    const { label } = studentLists;
+    return { label };
 }
