@@ -79,12 +79,12 @@ async function getStudentList(id) {
 }
 
 function basicDetailsStudentList(studentLists) {
-    const { id, idStudent, title, firstName, lastName, rg, institution, course, phone, location, created, updated, isVerified } = studentLists;
-    return { id, idStudent, title, firstName, lastName,rg, institution, course, phone, location, created, updated, isVerified };
+    const { id, idStudent, title, firstName, lastName, rg, institution, course, phone, location, label, created, updated, isVerified } = studentLists;
+    return { id, idStudent, title, firstName, lastName,rg, institution, course, phone, location, label, created, updated, isVerified };
 }
 
 
 function basicaddressStudentList(studentLists) {
-    const { location } = studentLists;
-    return { location };
+    const { location, label } = studentLists;
+    return { location, label };
 }

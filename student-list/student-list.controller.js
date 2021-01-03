@@ -51,6 +51,7 @@ function createStudentListSchema(req, res, next) {
         course: Joi.string().required(),
         phone: Joi.string().required(),
         location: Joi.string().required(),
+        label: Joi.string().required(),
     });
     validateRequest(req, next, schema);
 }
@@ -72,6 +73,7 @@ function updateStudentListSchema(req, res, next) {
         course: Joi.string().empty(''),
         phone: Joi.string().empty(''),
         location: Joi.string().empty(''),
+        label: Joi.string().empty(''),
     };
 
     // apenas administradores podem atualizar a função

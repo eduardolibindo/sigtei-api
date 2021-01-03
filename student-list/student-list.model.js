@@ -12,6 +12,7 @@ const schema = new Schema({
     course: { type: String, required: true },
     phone: { type: String, required: true },
     location: { type: String, required: true },
+    label: { type: String, required: true },  
     verified: Date,
     created: { type: Date, default: Date.now },
     updated: Date
