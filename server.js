@@ -82,15 +82,15 @@ app.post('/subscription', (req, res) => {
     fakeDatabase.push(subscription);
 });
   
-  app.post('/sendNotification', (req, res) => {
+app.post('/sendNotification', (req, res) => {
 
-    const notificationPayload = {
-      notification: {
-        title: 'New Notification',
-        body: 'This is the body of the notification',
-        icon: 'assets/icons/icon-512x512.png'
-      }
-    };
+  const notificationPayload = {
+    notification: {
+      title: 'New Notification',
+      body: 'This is the body of the notification',
+      icon: 'assets/icons/icon-512x512.png'
+    }
+};
   
     const promises = [];
     fakeDatabase.forEach(subscription => {
