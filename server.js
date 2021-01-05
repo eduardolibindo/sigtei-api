@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const Pusher = require('pusher');
+const webpush = require('web-push');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -45,6 +46,17 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
+const vapidKeys = {
+	"publicKey":"BKqOvOXQusxAXzOiRd9_v9aBuQln1CwnnpShklyLvf4BvWIAniKwIC-0M8T2R2XKxc3_QZiDC2OnF1I_NHIPIro",
+	"privateKey":"iCRH3mXwK59ZDb13FqJzrW4cJpkP8NpKIC6nen9sBho"
+};
+
+webpush.setVapidDetails(
+    'mailto:example@yourdomain.org',
+    vapidKeys.publicKey,
+    vapidKeys.privateKey
+);
+
 const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID,
     key: process.env.PUSHER_APP_KEY,
@@ -61,6 +73,10 @@ app.post('/ping', (req, res) => {
   
     pusher.trigger('location', 'ping', data);
     res.json(data);
+});
+
+app.post('/notification', (req, res) => {
+    
 });
 
 app.get('/', (req, res) => {
