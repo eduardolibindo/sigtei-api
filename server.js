@@ -51,6 +51,8 @@ const vapidKeys = {
 	"privateKey":"iCRH3mXwK59ZDb13FqJzrW4cJpkP8NpKIC6nen9sBho"
 };
 
+const fakeDatabase = [];
+
 webpush.setVapidDetails(
     'mailto:example@yourdomain.org',
     vapidKeys.publicKey,
@@ -75,8 +77,26 @@ app.post('/ping', (req, res) => {
     res.json(data);
 });
 
-app.post('/notification', (req, res) => {
-    
+app.post('/subscription', (req, res) => {
+    const subscription = req.body;
+    fakeDatabase.push(subscription);
+});
+  
+  app.post('/sendNotification', (req, res) => {
+
+    const notificationPayload = {
+      notification: {
+        title: 'New Notification',
+        body: 'This is the body of the notification',
+        icon: 'assets/icons/icon-512x512.png'
+      }
+    };
+  
+    const promises = [];
+    fakeDatabase.forEach(subscription => {
+      promises.push(webpush.sendNotification(subscription, JSON.stringify(notificationPayload)));
+    });
+    Promise.all(promises).then(() => res.sendStatus(200));
 });
 
 app.get('/', (req, res) => {
@@ -88,7 +108,6 @@ app.get('/', (req, res) => {
     // Cookies that have been signed
     console.log('Signed Cookies: ', req.signedCookies)
 });
-
 
 // iniciar o servidor
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
