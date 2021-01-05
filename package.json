@@ -27,6 +27,7 @@
         "sequelize": "^6.3.4",
         "socket.io": "^3.0.4",
         "swagger-ui-express": "^4.1.4",
+        "web-push": "^3.3.2",
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
