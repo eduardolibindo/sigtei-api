@@ -46,18 +46,16 @@ app.use(errorHandler);
 //     res.sendFile(path.join(`${__dirname}/dist/sigtei/index.html`));
 // });
 
-const vapidKeys = {
-	"publicKey":"BKqOvOXQusxAXzOiRd9_v9aBuQln1CwnnpShklyLvf4BvWIAniKwIC-0M8T2R2XKxc3_QZiDC2OnF1I_NHIPIro",
-	"privateKey":"iCRH3mXwK59ZDb13FqJzrW4cJpkP8NpKIC6nen9sBho"
-};
+// const vapidKeys = {
+// 	"publicKey":"BKqOvOXQusxAXzOiRd9_v9aBuQln1CwnnpShklyLvf4BvWIAniKwIC-0M8T2R2XKxc3_QZiDC2OnF1I_NHIPIro",
+// 	"privateKey":"iCRH3mXwK59ZDb13FqJzrW4cJpkP8NpKIC6nen9sBho"
+// };
 
-const fakeDatabase = [];
-
-webpush.setVapidDetails(
-    'mailto:example@yourdomain.org',
-    vapidKeys.publicKey,
-    vapidKeys.privateKey
-);
+// webpush.setVapidDetails(
+//     'mailto:example@yourdomain.org',
+//     vapidKeys.publicKey,
+//     vapidKeys.privateKey
+// );
 
 const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID,
@@ -78,10 +76,10 @@ app.post('/ping', (req, res) => {
 });
 
 app.post('/notify', (req, res) => {
-    const { title, body, icon } = req.body;
+    const { title, message, icon } = req.body;
     const data = {
         title,
-        body,
+        message,
         icon,
     };
   
@@ -89,32 +87,6 @@ app.post('/notify', (req, res) => {
     res.json(data);
 });
   
-app.post('/subscription', (req, res) => {
-    const subscription = req.body
-    fakeDatabase.push(subscription)
-});
-
-app.post('/sendNotification', (req, res) => {
-    const notificationPayload = {
-      notification: {
-        title: 'New Notification',
-        body: 'This is the body of the notification',
-        icon: 'assets/icons/icon-512x512.png',
-      },
-    }
-  
-    const promises = []
-    fakeDatabase.forEach(subscription => {
-      promises.push(
-        webpush.sendNotification(
-          subscription,
-          JSON.stringify(notificationPayload)
-        )
-      )
-    })
-    Promise.all(promises).then(() => res.sendStatus(200))
-});
-
 app.get('/', (req, res) => {
     res.send('Bem-vindo na api-sigtei no Heroku !!');
 
