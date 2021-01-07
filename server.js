@@ -77,10 +77,30 @@ app.post('/ping', (req, res) => {
     res.json(data);
 });
   
+app.post('/subscription', (req, res) => {
+    const subscription = req.body
+    fakeDatabase.push(subscription)
+});
+
 app.post('/sendNotification', (req, res) => {
-    const notify = {data: req.body};
-    pusher.trigger('notification', 'notify', notify); // Updates Live Notification
-    res.json(notify);
+    const notificationPayload = {
+      notification: {
+        title: 'New Notification',
+        body: 'This is the body of the notification',
+        icon: 'assets/icons/icon-512x512.png',
+      },
+    }
+  
+    const promises = []
+    fakeDatabase.forEach(subscription => {
+      promises.push(
+        webpush.sendNotification(
+          subscription,
+          JSON.stringify(notificationPayload)
+        )
+      )
+    })
+    Promise.all(promises).then(() => res.sendStatus(200))
 });
 
 app.get('/', (req, res) => {
