@@ -76,6 +76,18 @@ app.post('/ping', (req, res) => {
     pusher.trigger('location', 'ping', data);
     res.json(data);
 });
+
+app.post('/notify', (req, res) => {
+    const { title, body, icon } = req.body;
+    const data = {
+        title,
+        body,
+        icon,
+    };
+  
+    pusher.trigger('notification', 'notify', data);
+    res.json(data);
+});
   
 app.post('/subscription', (req, res) => {
     const subscription = req.body
