@@ -253,7 +253,9 @@ function setTokenCookie(res, token) {
     // cria um cookie com token de atualização que expira em 7 dias
     const cookieOptions = {
         httpOnly: true,
-        expires: new Date(Date.now() + 7*24*60*60*1000)
+        expires: new Date(Date.now() + 7*24*60*60*1000),
+        sameSite: 'none', 
+        secure: true
     };
     res.cookie('refreshToken', token, cookieOptions);
 }
