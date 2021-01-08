@@ -76,15 +76,15 @@ app.post('/ping', (req, res) => {
 });
 
 app.post('/notify', (req, res) => {
-    const { title, message, icon } = req.body;
-    const data = {
+    const { title, body, icon } = req.body;
+    const notification = {
         title,
-        message,
+        body,
         icon,
     };
   
-    pusher.trigger('notification', 'notify', data);
-    res.json(data);
+    pusher.trigger('notification', 'notify', notification);
+    res.json(notification);
 });
   
 app.get('/', (req, res) => {
