@@ -11,6 +11,7 @@ module.exports = {
     Places: require('../places/places.model'),
     Schedules: require('../schedules/schedules.model'),
     StudentList: require('../student-list/student-list.model'),
+    Notification: require('../notification/notification.model'),
     isValidId
 };
 
