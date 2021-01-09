@@ -77,10 +77,10 @@ function updateNotificationSchema(req, res, next) {
 }
 
 function updateNotification(req, res, next) {
-    // os usuários podem atualizar suas próprias contas e os administradores podem atualizar qualquer conta
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Não autorizado' });
-    }
+    // // os usuários podem atualizar suas próprias contas e os administradores podem atualizar qualquer conta
+    // if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    //     return res.status(401).json({ message: 'Não autorizado' });
+    // }
 
     notificationService.updateNotification(req.params.id, req.body)
         .then(notifications => res.json(notifications))
