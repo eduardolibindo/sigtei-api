@@ -15,13 +15,4 @@ schema.virtual('isVerified').get(function () {
     return !!(this.verified);
 });
 
-schema.set('toJSON', {
-    virtuals: true,
-    versionKey: false,
-    transform: function (doc, ret) {
-        // remova esses adereços quando o objeto for serializado
-        delete ret._id;
-    }
-});
-
 module.exports = mongoose.model('Schedules', schema);
