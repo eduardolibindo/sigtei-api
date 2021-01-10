@@ -80,7 +80,7 @@ function _deleteSchedule(req, res, next) {
         return res.status(401).json({ message: 'Não autorizado' });
     }
 
-    schedulesService._deleteSchedule(req.params.id)
+    schedulesService.deleteSchedule(req.params.id)
         .then(() => res.json({ message: 'Horario excluído com sucesso' }))
         .catch(next);
 }
