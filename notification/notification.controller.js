@@ -22,18 +22,6 @@ function getnotificationAll(req, res, next) {
         .catch(next);
 }
 
-function getaddressAll(req, res, next) {
-    notificationService.getaddressAll()
-    .then(notifications => res.json(notifications))
-    .catch(next);
-}
-
-function getlabelAll(req, res, next) {
-    notificationService.getlabelAll()
-    .then(notifications => res.json(notifications))
-    .catch(next);
-}
-
 function getnotificationById(req, res, next) {
     // os usuários podem obter seus próprios enderecos e os administradores podem obter qualquer endereco
     if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
