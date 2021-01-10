@@ -7,12 +7,12 @@ const Role = require('../_helpers/role');
 const notificationService = require('./notification.service');
 
 //rotas
-router.get('/', authorize([Role.Admin, Role.Motorista]), getnotificationAll);
+router.get('/', authorize([Role.Admin, Role.Motorista, Role.Estudante]), getnotificationAll);
 router.get('/:id', authorize(), getnotificationById);
-router.post('/', authorize([Role.Admin, Role.Motorista]), createNotificationSchema, createNotification);
+router.post('/', authorize([Role.Admin, Role.Motorista, Role.Estudante]), createNotificationSchema, createNotification);
 router.put('/:id', authorize(), updateNotificationSchema, updateNotification);
-router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteNotification);
-router.delete('/', authorize([Role.Admin, Role.Motorista]), _deleteNotificationAll);
+router.delete('/:id', authorize([Role.Admin, Role.Motorista, Role.Estudante]), _deleteNotification);
+router.delete('/', authorize([Role.Admin, Role.Motorista, Role.Estudante]), _deleteNotificationAll);
 
 module.exports = router;
 
