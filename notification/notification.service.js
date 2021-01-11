@@ -82,9 +82,12 @@ function basicDetailsNotification(notifications) {
 async function sendNotificationEmail(notifications, account) {
     let message;
 
-    message =  `<p><span>${notifications.title}</span></p>
-                <p><span>${notifications.body}</span></p>
-                <p><code>Codigo da Mensagem: ${notifications.id}</code></p>`;
+    message =  `<div style="text-align: center;">
+                    <p><span>${notifications.title}</span></p>
+                    <p><span>${notifications.body}</span></p>
+                    <p><code>Codigo da Mensagem: ${notifications.id}</code></p>
+                </div>
+                <p>Atenciosamente Suporte Sigtei!</p>`;
 
 
     await sendEmail({
