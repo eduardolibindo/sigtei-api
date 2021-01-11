@@ -38,8 +38,9 @@ async function createNotification(params) {
     return basicDetailsNotification(notifications);
 }
 
-async function updateNotification(id, params) {
+async function updateNotification(id, params, origin) {
     const notifications = await getNotification(id);
+    const account = await db.Account.find({ email });
 
     // validar (se o endereco foi alterado)
     if (params.title && notifications.title !== params.title && await db.Notification.findOne({ title: params.title })) {
@@ -51,8 +52,9 @@ async function updateNotification(id, params) {
     notifications.updated = Date.now();
     await notifications.save();
 
-    return basicDetailsNotification(notifications);
+    await sendNotificationEmail(notifications, account, origin);
 
+    return basicDetailsNotification(notifications);
 }
 
 async function _deleteNotification(id) {
@@ -75,4 +77,34 @@ async function getNotification(id) {
 function basicDetailsNotification(notifications) {
     const { id, title, body, icon, created, updated, isVerified } = notifications;
     return { id, title, body, icon, created, updated, isVerified };
+}
+
+async function sendNotificationEmail(notifications, account, origin) {
+    let message;
+    if (origin) {
+        message = `<p>Nova mensagem:</p>
+                   <p>${notifications.title}</p>
+                   <p>${notifications.body}</p>`;
+    } else {
+        message = `<p></p>
+                   <p><code>${notifications.id}</code></p>`;
+    }
+
+    await sendEmail({
+        to: account.email,
+        subject: 'Sigtei - Notificação',
+        html: `<h4>Notificação</h4>
+               <p>Leia a notificação!</p>
+               ${message}`
+    });
+}
+
+async function getemailAll() {
+    const accounts = await db.Account.find();
+    return accounts.map(x => basicDetailsEmails(x));
+}
+
+function basicDetailsEmails(account) {
+    const { email } = account;
+    return { email };
 }
