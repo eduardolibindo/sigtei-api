@@ -79,16 +79,14 @@ function basicDetailsNotification(notifications) {
     return { id, title, body, icon, created, updated, isVerified };
 }
 
-async function sendNotificationEmail(notifications, account, origin) {
+async function sendNotificationEmail(notifications, account) {
     let message;
-    if (origin) {
-        message = `<p>Nova mensagem:</p>
+
+    message = `<p>Nova mensagem:</p>
                    <p>${notifications.title}</p>
-                   <p>${notifications.body}</p>`;
-    } else {
-        message = `<p></p>
+                   <p>${notifications.body}</p>
                    <p><code>${notifications.id}</code></p>`;
-    }
+
 
     await sendEmail({
         to: account,
