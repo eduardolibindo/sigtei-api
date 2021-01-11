@@ -40,7 +40,7 @@ async function createNotification(params) {
 
 async function updateNotification(id, params, origin) {
     const notifications = await getNotification(id);
-    const account = await db.Account.find({email});
+    const account = await db.Account.find(email);
 
     // validar (se o endereco foi alterado)
     if (params.title && notifications.title !== params.title && await db.Notification.findOne({ title: params.title })) {
