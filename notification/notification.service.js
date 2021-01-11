@@ -40,7 +40,7 @@ async function createNotification(params) {
 
 async function updateNotification(id, params, origin) {
     const notifications = await getNotification(id);
-    const account = await getemailAll();
+    const account = await db.Account.find({email});
 
     // validar (se o endereco foi alterado)
     if (params.title && notifications.title !== params.title && await db.Notification.findOne({ title: params.title })) {
@@ -91,7 +91,7 @@ async function sendNotificationEmail(notifications, account) {
 
 
     await sendEmail({
-        account,
+        to: account,
         subject: 'Sigtei - Notificação ✔',
         html: `<h4>Notificação:</h4>
                ${message}`
@@ -104,6 +104,6 @@ async function getemailAll() {
 }
 
 function basicDetailsEmails(account) {
-    const { to } = account;
-    return { to };
+    const { email } = account;
+    return { email };
 }
