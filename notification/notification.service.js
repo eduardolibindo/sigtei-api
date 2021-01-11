@@ -91,7 +91,7 @@ async function sendNotificationEmail(notifications, account) {
 
 
     await sendEmail({
-        to: account,
+        account,
         subject: 'Sigtei - Notificação ✔',
         html: `<h4>Notificação:</h4>
                ${message}`
@@ -104,6 +104,6 @@ async function getemailAll() {
 }
 
 function basicDetailsEmails(account) {
-    const { email } = account;
-    return { email };
+    const { to } = account;
+    return { to };
 }
