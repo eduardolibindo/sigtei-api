@@ -84,7 +84,7 @@ async function sendNotificationEmail(notifications, account) {
 
     message =  `<p><span>${notifications.title}</span></p>
                 <p><span>${notifications.body}</span></p>
-                <p>Codigo da Mensagem: <code>${notifications.id}</code></p>`;
+                <p><code>Codigo da Mensagem: ${notifications.id}</code></p>`;
 
 
     await sendEmail({
