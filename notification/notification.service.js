@@ -41,7 +41,7 @@ async function createNotification(params) {
 async function updateNotification(id, params) {
     const notifications = await getNotification(id);
     const account = await getemailAll();
-    emails = Object.values(account);
+    const emails = Object.values(account);
     console.log(emails);
 
     // validar (se o endereco foi alterado)
