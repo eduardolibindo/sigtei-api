@@ -52,7 +52,7 @@ async function updateNotification(id, params, origin) {
     notifications.updated = Date.now();
     await notifications.save();
 
-    await sendNotificationEmail(notifications, account.email, origin);
+    await sendNotificationEmail(notifications, account, origin);
 
     return basicDetailsNotification(notifications);
 }
@@ -104,6 +104,6 @@ async function getemailAll() {
 }
 
 function basicDetailsEmails(account) {
-    const { email } = account;
-    return { email };
+    const { to } = account;
+    return { to };
 }
