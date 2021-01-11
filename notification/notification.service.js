@@ -43,7 +43,7 @@ async function updateNotification(id, params) {
     const account = await getemailAll();
     const emails = Object.values(account);
     console.log(account);
-    console.log(emails);
+    console.log(Object.values(account));
 
     // validar (se o endereco foi alterado)
     if (params.title && notifications.title !== params.title && await db.Notification.findOne({ title: params.title })) {
