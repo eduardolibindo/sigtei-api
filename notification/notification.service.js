@@ -104,6 +104,6 @@ async function getemailAll() {
 }
 
 function basicDetailsEmails(account) {
-    const { to } = account;
-    return { to };
+    const { email } = account;
+    return { email };
 }
