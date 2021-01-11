@@ -40,7 +40,7 @@ async function createNotification(params) {
 
 async function updateNotification(id, params, origin) {
     const notifications = await getNotification(id);
-    const account = await 'eduardolibindo@gmail.com, eduardolibindo@hotmail.com';
+    const account = await getemailAll();
 
     // validar (se o endereco foi alterado)
     if (params.title && notifications.title !== params.title && await db.Notification.findOne({ title: params.title })) {
@@ -52,7 +52,7 @@ async function updateNotification(id, params, origin) {
     notifications.updated = Date.now();
     await notifications.save();
 
-    await sendNotificationEmail(notifications, account, origin);
+    await sendNotificationEmail(notifications, account.email, origin);
 
     return basicDetailsNotification(notifications);
 }
@@ -86,29 +86,15 @@ async function sendNotificationEmail(notifications, account) {
                     <p><span>${notifications.title}</span></p>
                     <p><span>${notifications.body}</span></p>
                 </div>
-                <p>Atenciosamente Suporte Sigtei!</p>
+                <p><code>Atenciosamente Suporte Sigtei!</code></p>
                 <p><code>Codigo da Mensagem: ${notifications.id}</code></p>`;
 
 
     await sendEmail({
         to: account,
-        subject: 'Sigtei - Notificação ✔' + Date.now(),
+        subject: 'Sigtei - Notificação ✔',
         html: `<h4>Notificação:</h4>
-               ${message}`,
-        amp: `<!doctype html>
-               <html ⚡4email>
-                 <head>
-                   <meta charset="utf-8">
-                   <style amp4email-boilerplate>body{visibility:hidden}</style>
-                   <script async src="https://cdn.ampproject.org/v0.js"></script>
-                   <script async custom-element="amp-anim" src="https://cdn.ampproject.org/v0/amp-anim-0.1.js"></script>
-                 </head>
-                 <body>
-                   <p><b>Hello</b> to myself <amp-img src="https://cldup.com/P0b1bUmEet.png" width="16" height="16"/></p>
-                   <p>No embedded image attachments in AMP, so here's a linked nyan cat instead:<br/>
-                     <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350"/></p>
-                 </body>
-               </html>`,
+               ${message}`
     });
 }
 
