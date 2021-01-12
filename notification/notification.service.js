@@ -88,7 +88,7 @@ function basicDetailsNotification(notifications) {
     return { id, title, body, icon, created, updated, isVerified };
 }
 
-async function sendNotificationEmail(notifications, account) {
+async function sendNotificationEmail(notifications, emails) {
     let message;
 
     message =  `<div style="text-align: center;">
@@ -100,7 +100,7 @@ async function sendNotificationEmail(notifications, account) {
 
 
     await sendEmail({
-        to: account,
+        to: emails,
         subject: 'Sigtei - Notificação ✔',
         html: `<h4>Notificação:</h4>
                ${message}`
