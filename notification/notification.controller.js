@@ -8,7 +8,7 @@ const notificationService = require('./notification.service');
 
 //rotas
 router.get('/', getnotificationAll);
-router.get('/:id', authorize(), getnotificationById);
+router.get('/:id', authorize([Role.Admin, Role.Motorista]), getnotificationById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createNotificationSchema, createNotification);
 router.put('/:id', authorize([Role.Admin, Role.Motorista]), updateNotificationSchema, updateNotification);
 router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteNotification);
