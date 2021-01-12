@@ -23,10 +23,10 @@ function getnotificationAll(req, res, next) {
 }
 
 function getnotificationById(req, res, next) {
-    // os usuários podem obter seus próprios enderecos e os administradores podem obter qualquer endereco
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Não autorizado' });
-    }
+    // // os usuários podem obter seus próprios enderecos e os administradores podem obter qualquer endereco
+    // if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    //     return res.status(401).json({ message: 'Não autorizado' });
+    // }
 
     notificationService.getnotificationById(req.params.id)
         .then(notifications => notifications ? res.json(notifications) : res.sendStatus(404))
