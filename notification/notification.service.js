@@ -48,7 +48,6 @@ async function updateNotification(id, params) {
 
     var x = emails.toString();
 
-
     console.log(x);
 
     // validar (se o endereco foi alterado)
