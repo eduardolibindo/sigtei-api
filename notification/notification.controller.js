@@ -10,7 +10,7 @@ const notificationService = require('./notification.service');
 router.get('/', getnotificationAll);
 router.get('/:id', authorize(), getnotificationById);
 router.post('/', authorize([Role.Admin, Role.Motorista]), createNotificationSchema, createNotification);
-router.put('/:id', authorize(), updateNotificationSchema, updateNotification);
+router.put('/:id', updateNotificationSchema, updateNotification);
 router.delete('/:id', authorize([Role.Admin, Role.Motorista]), _deleteNotification);
 router.delete('/', authorize([Role.Admin, Role.Motorista]), _deleteNotificationAll);
 
