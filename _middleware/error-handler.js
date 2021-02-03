@@ -8,7 +8,7 @@ function errorHandler(err, req, res, next) {
             const statusCode = is404 ? 404 : 400;
             return res.status(statusCode).json({ message: err });
         case err.name === 'ValidationError':
-            // mongoose validation error
+            // erro de validação do mongoose
             return res.status(400).json({ message: err.message });
         case err.name === 'UnauthorizedError':
             // erro de autenticação jwt
