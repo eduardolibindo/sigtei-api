@@ -22,6 +22,7 @@ app.use('/places', require('./places/places.controller'));
 app.use('/schedules', require('./schedules/schedules.controller'));
 app.use('/student-list', require('./student-list/student-list.controller'));
 app.use('/notification', require('./notification/notification.controller'));
+// app.use('/file', require('./files/files.controller'));
 
 // manipulador de erro global
 app.use(errorHandler);
